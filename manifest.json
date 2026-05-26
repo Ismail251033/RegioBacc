@@ -1,0 +1,27 @@
+{
+  "name": "RegioBacc – Français 1BAC",
+  "short_name": "RegioBacc",
+  "description": "Préparez le régional de français 1BAC au Maroc",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0d0f1a",
+  "theme_color": "#6c63ff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education"],
+  "lang": "fr",
+  "dir": "ltr"
+}

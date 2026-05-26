@@ -1,0 +1,2447 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="RegioBacc – Préparez le régional de français 1BAC au Maroc">
+<meta name="theme-color" content="#0d0f1a">
+<title>RegioBacc – Révision Français 1BAC</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   REGIOBACC – DESIGN SYSTEM
+   ============================================ */
+:root {
+  --bg: #0d0f1a;
+  --bg2: #13162a;
+  --bg3: #1a1f38;
+  --card: rgba(255,255,255,0.04);
+  --card-border: rgba(255,255,255,0.08);
+  --glass: rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.12);
+  --text: #f0f2ff;
+  --text2: #9ba3c8;
+  --text3: #5a6190;
+  --accent: #6c63ff;
+  --accent2: #00d4ff;
+  --accent3: #ff6b9d;
+  --gold: #ffd166;
+  --green: #06d6a0;
+  --red: #ef476f;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-lg: 0 24px 64px rgba(0,0,0,0.6);
+  --radius: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --font: 'Sora', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --trans: all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="light"] {
+  --bg: #f4f6ff;
+  --bg2: #eef0fb;
+  --bg3: #e6e9f7;
+  --card: rgba(255,255,255,0.7);
+  --card-border: rgba(100,110,180,0.15);
+  --glass: rgba(255,255,255,0.8);
+  --glass-border: rgba(108,99,255,0.2);
+  --text: #0d1033;
+  --text2: #3d4578;
+  --text3: #7880b0;
+  --shadow: 0 8px 32px rgba(80,90,180,0.12);
+  --shadow-lg: 0 24px 64px rgba(80,90,180,0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.4s, color 0.4s;
+}
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+/* ============ LAYOUT ============ */
+.app { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px;
+  background: var(--bg2);
+  border-right: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 100;
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  overflow-y: auto;
+}
+.main-content {
+  margin-left: 260px;
+  flex: 1;
+  min-height: 100vh;
+  transition: margin 0.3s;
+}
+@media(max-width:768px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); box-shadow: var(--shadow-lg); }
+  .main-content { margin-left: 0; }
+}
+
+/* ============ SIDEBAR ============ */
+.sidebar-logo {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid var(--card-border);
+}
+.logo-mark {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+}
+.logo-sub {
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 12px;
+}
+.nav-section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text3);
+  padding: 12px 12px 8px;
+  font-weight: 600;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--trans);
+  color: var(--text2);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 2px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.nav-item:hover { background: var(--card); color: var(--text); }
+.nav-item.active {
+  background: linear-gradient(135deg, rgba(108,99,255,0.2), rgba(0,212,255,0.1));
+  color: var(--text);
+  border: 1px solid rgba(108,99,255,0.3);
+}
+.nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.nav-badge {
+  margin-left: auto;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-weight: 700;
+}
+.sidebar-footer {
+  padding: 16px 12px;
+  border-top: 1px solid var(--card-border);
+}
+.xp-bar-wrap { margin-top: 8px; }
+.xp-label { font-size: 11px; color: var(--text3); margin-bottom: 6px; display: flex; justify-content: space-between; }
+.xp-bar { height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.xp-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+
+/* ============ TOPBAR ============ */
+.topbar {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(20px);
+}
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.hamburger {
+  display: none;
+  width: 36px; height: 36px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  background: var(--card);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  transition: var(--trans);
+}
+.hamburger:hover { border-color: var(--accent); }
+.hamburger span { width: 16px; height: 1.5px; background: var(--text); border-radius: 2px; transition: var(--trans); }
+@media(max-width:768px) { .hamburger { display: flex; } }
+.page-title { font-size: 17px; font-weight: 700; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.icon-btn {
+  width: 36px; height: 36px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  background: var(--card);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  transition: var(--trans);
+  color: var(--text2);
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--text); }
+.streak-chip {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  background: rgba(255,209,102,0.12);
+  border: 1px solid rgba(255,209,102,0.25);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+/* ============ PAGES ============ */
+.page { display: none; padding: 32px 28px; animation: fadeIn 0.4s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ============ HOME ============ */
+.hero {
+  background: linear-gradient(135deg, rgba(108,99,255,0.12) 0%, rgba(0,212,255,0.06) 50%, rgba(255,107,157,0.08) 100%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 56px 48px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(108,99,255,0.2) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: 30%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(0,212,255,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(108,99,255,0.15);
+  border: 1px solid rgba(108,99,255,0.3);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent2);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 5vw, 48px);
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.hero h1 em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  font-size: 16px;
+  color: var(--text2);
+  max-width: 520px;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  padding: 13px 26px;
+  border-radius: 12px;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: var(--trans);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  box-shadow: 0 8px 24px rgba(108,99,255,0.35);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(108,99,255,0.5); }
+.btn-secondary {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--card-border);
+}
+.btn-secondary:hover { border-color: var(--accent); }
+
+/* Stats row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+@media(max-width:900px) { .stats-row { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:480px) { .stats-row { grid-template-columns: 1fr 1fr; } }
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 22px;
+  transition: var(--trans);
+}
+.stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.stat-num {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-label { font-size: 12px; color: var(--text3); margin-top: 4px; }
+
+/* Section title */
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--card-border);
+  margin-left: 8px;
+}
+
+/* Books grid */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 40px;
+}
+@media(max-width:900px) { .books-grid { grid-template-columns: 1fr; } }
+.book-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  cursor: pointer;
+  transition: var(--trans);
+  position: relative;
+  overflow: hidden;
+}
+.book-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--book-color1, rgba(108,99,255,0.08)), var(--book-color2, rgba(0,212,255,0.04)));
+  opacity: 0;
+  transition: var(--trans);
+}
+.book-card:hover { transform: translateY(-4px); border-color: var(--book-accent, var(--accent)); box-shadow: var(--shadow-lg); }
+.book-card:hover::before { opacity: 1; }
+.book-emoji { font-size: 36px; margin-bottom: 14px; display: block; }
+.book-title { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.book-author { font-size: 12px; color: var(--text3); margin-bottom: 14px; }
+.book-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+.tag {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--tag-bg, rgba(108,99,255,0.12));
+  color: var(--tag-color, var(--accent));
+  border: 1px solid var(--tag-border, rgba(108,99,255,0.2));
+}
+.book-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.book-prog-bar { flex: 1; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.book-prog-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; transition: width 1s; }
+.book-prog-pct { font-size: 11px; color: var(--text3); white-space: nowrap; }
+.book-btn {
+  width: 100%;
+  padding: 11px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(0,212,255,0.08));
+  border: 1px solid rgba(108,99,255,0.25);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--trans);
+}
+.book-btn:hover { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; }
+
+/* ============ BOOK PAGE ============ */
+.book-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.book-cover {
+  width: 100px;
+  height: 140px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow);
+}
+.book-info h1 { font-family: var(--font-serif); font-size: 28px; margin-bottom: 6px; }
+.book-info .author { color: var(--text2); margin-bottom: 12px; }
+.book-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg2);
+  border-radius: 14px;
+  padding: 4px;
+  margin-bottom: 32px;
+  overflow-x: auto;
+}
+.book-tab {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  background: none;
+  color: var(--text2);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--trans);
+  white-space: nowrap;
+}
+.book-tab.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+}
+.book-tab:hover:not(.active) { color: var(--text); }
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+
+/* Summary */
+.summary-text {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--text2);
+}
+.summary-text h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 24px 0 10px;
+  padding-left: 14px;
+  border-left: 3px solid var(--accent);
+}
+.summary-text p { margin-bottom: 12px; }
+
+/* Chapters */
+.chapter-item {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.chapter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: var(--trans);
+}
+.chapter-header:hover { background: rgba(255,255,255,0.03); }
+.chapter-num {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.chapter-title-text { font-size: 14px; font-weight: 600; margin-left: 12px; flex: 1; }
+.chapter-arrow { transition: transform 0.3s; color: var(--text3); }
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-body {
+  display: none;
+  padding: 0 20px 20px;
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.8;
+  border-top: 1px solid var(--card-border);
+  padding-top: 16px;
+}
+.chapter-item.open .chapter-body { display: block; }
+
+/* Characters */
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+  gap: 16px;
+}
+.char-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 22px;
+  transition: var(--trans);
+}
+.char-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.char-avatar {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+.char-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.char-role { font-size: 12px; color: var(--accent2); margin-bottom: 12px; font-weight: 600; }
+.char-desc { font-size: 13px; color: var(--text2); line-height: 1.7; }
+
+/* Themes */
+.theme-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: var(--trans);
+}
+.theme-card:hover { border-color: var(--accent); }
+.theme-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.theme-label-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.theme-desc { font-size: 14px; color: var(--text2); line-height: 1.8; }
+
+/* Citations */
+.citation-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  position: relative;
+  transition: var(--trans);
+}
+.citation-card:hover { border-color: var(--accent); }
+.citation-card::before {
+  content: '"';
+  position: absolute;
+  top: 16px; left: 20px;
+  font-family: var(--font-serif);
+  font-size: 64px;
+  color: var(--accent);
+  opacity: 0.2;
+  line-height: 1;
+}
+.citation-text {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.7;
+  padding-left: 16px;
+  border-left: 3px solid var(--accent);
+  margin-bottom: 14px;
+}
+.citation-context { font-size: 13px; color: var(--text2); margin-bottom: 8px; }
+.citation-tip {
+  font-size: 12px;
+  color: var(--accent2);
+  padding: 8px 12px;
+  background: rgba(0,212,255,0.06);
+  border-radius: 8px;
+  border: 1px solid rgba(0,212,255,0.15);
+}
+
+/* Flashcards */
+.flashcard-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.fc-count { font-size: 14px; color: var(--text2); }
+.flashcard-stage {
+  perspective: 1000px;
+  margin-bottom: 24px;
+}
+.flashcard {
+  width: 100%;
+  height: 240px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  cursor: pointer;
+}
+.flashcard.flipped { transform: rotateY(180deg); }
+.fc-face {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px;
+  backface-visibility: hidden;
+}
+.fc-front {
+  background: linear-gradient(135deg, var(--bg3), var(--bg2));
+  border: 1px solid var(--card-border);
+}
+.fc-back {
+  background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(0,212,255,0.08));
+  border: 1px solid rgba(108,99,255,0.3);
+  transform: rotateY(180deg);
+}
+.fc-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text3); margin-bottom: 16px; }
+.fc-text { font-size: 17px; font-weight: 600; line-height: 1.5; }
+.fc-sub { font-size: 13px; color: var(--text2); margin-top: 10px; line-height: 1.6; }
+.fc-nav { display: flex; gap: 10px; justify-content: center; }
+.fc-btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--trans);
+}
+.fc-btn:hover { border-color: var(--accent); }
+.fc-btn.know { border-color: var(--green); color: var(--green); }
+.fc-btn.dont-know { border-color: var(--red); color: var(--red); }
+.fc-hint { text-align: center; color: var(--text3); font-size: 12px; margin-bottom: 16px; }
+
+/* QCM */
+.qcm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.qcm-level-select {
+  display: flex;
+  gap: 8px;
+}
+.level-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  color: var(--text2);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--trans);
+}
+.level-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+.qcm-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.qcm-prog-bar { flex: 1; height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.qcm-prog-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.5s; }
+.qcm-timer {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 700; color: var(--gold);
+}
+.question-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-bottom: 24px;
+}
+.question-num {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text3);
+  margin-bottom: 14px;
+}
+.question-text {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.options-list { display: flex; flex-direction: column; gap: 10px; }
+.option-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1.5px solid var(--card-border);
+  background: var(--card);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--trans);
+  text-align: left;
+}
+.option-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(108,99,255,0.06); }
+.option-btn.correct { border-color: var(--green); background: rgba(6,214,160,0.1); color: var(--green); }
+.option-btn.wrong { border-color: var(--red); background: rgba(239,71,111,0.1); color: var(--red); }
+.option-letter {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  background: var(--bg3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: var(--trans);
+}
+.option-btn.correct .option-letter { background: var(--green); color: white; }
+.option-btn.wrong .option-letter { background: var(--red); color: white; }
+.explanation-box {
+  display: none;
+  padding: 16px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.7;
+  margin-top: 14px;
+  border-left: 3px solid var(--green);
+  background: rgba(6,214,160,0.06);
+  color: var(--text2);
+}
+.explanation-box.wrong-expl { border-color: var(--red); background: rgba(239,71,111,0.06); }
+.qcm-results {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+}
+.score-circle {
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  margin: 0 auto 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(var(--accent) var(--score-deg, 0deg), var(--bg3) 0deg);
+  position: relative;
+}
+.score-circle::before {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  background: var(--bg2);
+}
+.score-num { font-size: 32px; font-weight: 800; z-index: 1; }
+.score-total { font-size: 13px; color: var(--text3); z-index: 1; }
+.results-title { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+.results-desc { color: var(--text2); margin-bottom: 28px; }
+.rec-box {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 18px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+.rec-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; color: var(--accent2); }
+.rec-list { font-size: 13px; color: var(--text2); line-height: 1.9; }
+
+/* ============ DASHBOARD ============ */
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+@media(max-width:768px) { .dash-grid { grid-template-columns: 1fr; } }
+.dash-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+.dash-card-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+.dash-big-num {
+  font-size: 48px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 4px;
+}
+.badges-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+.badge-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  font-size: 12px;
+  font-weight: 600;
+}
+.badge-item.earned { border-color: var(--gold); color: var(--gold); background: rgba(255,209,102,0.08); }
+.roman-prog-list { display: flex; flex-direction: column; gap: 14px; }
+.rpm-item { display: flex; align-items: center; gap: 12px; }
+.rpm-emoji { font-size: 20px; flex-shrink: 0; }
+.rpm-info { flex: 1; }
+.rpm-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.rpm-bar { height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.rpm-fill { height: 100%; border-radius: 2px; transition: width 1s; }
+.rpm-pct { font-size: 12px; color: var(--text3); }
+.streak-display {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.streak-day {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: var(--bg3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text3);
+  transition: var(--trans);
+}
+.streak-day.done { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; }
+.streak-day.today { background: var(--gold); color: var(--bg); }
+
+/* ============ CHATBOT ============ */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 160px);
+  min-height: 400px;
+}
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.chat-msg {
+  max-width: 80%;
+  animation: fadeIn 0.3s ease;
+}
+.chat-msg.user { align-self: flex-end; }
+.chat-msg.bot { align-self: flex-start; }
+.chat-bubble {
+  padding: 14px 18px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.user .chat-bubble {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+.bot .chat-bubble {
+  background: var(--bg3);
+  border: 1px solid var(--card-border);
+  color: var(--text);
+  border-bottom-left-radius: 4px;
+}
+.bot-avatar {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.typing-indicator {
+  display: flex; gap: 4px; align-items: center; padding: 14px 18px;
+  background: var(--bg3);
+  border-radius: 18px;
+  width: fit-content;
+}
+.typing-dot {
+  width: 7px; height: 7px;
+  background: var(--text3);
+  border-radius: 50%;
+  animation: typingBounce 1.4s infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }
+.chat-suggestions {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 12px 20px;
+  background: var(--bg2);
+  border-left: 1px solid var(--card-border);
+  border-right: 1px solid var(--card-border);
+}
+.suggestion-chip {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--trans);
+}
+.suggestion-chip:hover { border-color: var(--accent); color: var(--text); }
+.chat-input-area {
+  display: flex;
+  gap: 10px;
+  padding: 14px;
+  background: var(--bg3);
+  border: 1px solid var(--card-border);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+.chat-input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: var(--bg2);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  outline: none;
+  transition: var(--trans);
+}
+.chat-input:focus { border-color: var(--accent); }
+.chat-send {
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  transition: var(--trans);
+}
+.chat-send:hover { transform: scale(1.03); }
+
+/* ============ SEARCH ============ */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  transition: var(--trans);
+}
+.search-bar:focus-within { border-color: var(--accent); }
+.search-bar input {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  outline: none;
+}
+.search-bar input::placeholder { color: var(--text3); }
+
+/* Notification toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 14px 20px;
+  background: var(--bg3);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1000;
+  animation: toastIn 0.3s ease;
+  box-shadow: var(--shadow);
+}
+@keyframes toastIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* Install button */
+.install-btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: rgba(255,209,102,0.1);
+  border: 1px solid rgba(255,209,102,0.3);
+  color: var(--gold);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: none;
+  transition: var(--trans);
+}
+.install-btn:hover { background: var(--gold); color: var(--bg); }
+.install-btn.visible { display: flex; align-items: center; gap: 6px; }
+
+/* Grid 2col */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media(max-width:768px) { .grid-2 { grid-template-columns: 1fr; } }
+.grid-full { grid-column: 1 / -1; }
+
+/* ============ PROFILE ============ */
+.profile-header {
+  background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(0,212,255,0.08));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 36px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.profile-avatar {
+  width: 80px; height: 80px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  flex-shrink: 0;
+}
+.profile-name { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.profile-level { font-size: 14px; color: var(--accent2); margin-bottom: 8px; }
+.profile-xp-bar { width: 200px; height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.profile-xp-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+.settings-section { margin-bottom: 28px; }
+.settings-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+}
+.setting-label { font-size: 14px; font-weight: 500; }
+.setting-desc { font-size: 12px; color: var(--text3); margin-top: 2px; }
+.toggle {
+  width: 44px; height: 24px;
+  border-radius: 12px;
+  background: var(--bg3);
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: var(--trans);
+}
+.toggle.on { background: var(--accent); }
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.3s;
+}
+.toggle.on::after { transform: translateX(20px); }
+
+/* mobile padding */
+@media(max-width:768px) {
+  .page { padding: 20px 16px; }
+  .hero { padding: 32px 24px; }
+  .book-header { flex-direction: column; }
+  .topbar { padding: 0 16px; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">RegioBacc</div>
+    <div class="logo-sub">Français • 1BAC • Maroc</div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section-title">Navigation</div>
+    <button class="nav-item active" onclick="showPage('home')">
+      <span class="nav-icon">🏠</span> Accueil
+    </button>
+    <button class="nav-item" onclick="showPage('romans')">
+      <span class="nav-icon">📚</span> Romans
+    </button>
+    <button class="nav-item" onclick="showPage('flashcards-main')">
+      <span class="nav-icon">🃏</span> Flashcards
+    </button>
+    <button class="nav-item" onclick="showPage('qcm-main')">
+      <span class="nav-icon">✏️</span> QCM
+      <span class="nav-badge">3</span>
+    </button>
+    <div class="nav-section-title">Progression</div>
+    <button class="nav-item" onclick="showPage('dashboard')">
+      <span class="nav-icon">📊</span> Tableau de bord
+    </button>
+    <button class="nav-item" onclick="showPage('profile')">
+      <span class="nav-icon">👤</span> Profil
+    </button>
+    <div class="nav-section-title">Assistance</div>
+    <button class="nav-item" onclick="showPage('chatbot')">
+      <span class="nav-icon">🤖</span> Assistant IA
+    </button>
+  </div>
+  <div class="sidebar-footer">
+    <div class="xp-bar-wrap">
+      <div class="xp-label">
+        <span id="sidebar-level">Niveau 1</span>
+        <span id="sidebar-xp">0 / 500 XP</span>
+      </div>
+      <div class="xp-bar"><div class="xp-fill" id="sidebar-xp-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+</nav>
+
+<!-- TOPBAR -->
+<div class="main-content">
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" id="hamburger" onclick="toggleSidebar()">
+      <span></span><span></span><span></span>
+    </button>
+    <span class="page-title" id="page-title">Accueil</span>
+  </div>
+  <div class="topbar-right">
+    <div class="streak-chip" id="streak-chip">🔥 <span id="streak-count">0</span></div>
+    <button class="icon-btn" onclick="toggleTheme()" title="Changer thème">🌙</button>
+    <button class="install-btn" id="install-btn">📲 Installer</button>
+  </div>
+</div>
+
+<!-- ===================== PAGES ===================== -->
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-tag">✨ Programme officiel marocain</div>
+    <h1>Préparez votre <em>régional</em><br>de français 1BAC</h1>
+    <p>Résumés détaillés, flashcards interactives, QCM intelligents et assistant pédagogique — tout ce qu'il vous faut pour réussir.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="showPage('romans')">Commencer à réviser →</button>
+      <button class="btn btn-secondary" onclick="showPage('qcm-main')">Faire un QCM</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num" id="home-qcm-done">0</div>
+      <div class="stat-label">QCM terminés</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="home-avg">—</div>
+      <div class="stat-label">Score moyen</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="home-fc-done">0</div>
+      <div class="stat-label">Flashcards vues</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="home-streak">0</div>
+      <div class="stat-label">Jours consécutifs</div>
+    </div>
+  </div>
+
+  <div class="section-title">📚 Romans au programme</div>
+  <div class="books-grid">
+    <div class="book-card" style="--book-accent:#6c63ff;--book-color1:rgba(108,99,255,0.1);--book-color2:rgba(0,212,255,0.05)">
+      <span class="book-emoji">📖</span>
+      <div class="book-title">La Boîte à merveilles</div>
+      <div class="book-author">Ahmed Sefrioui</div>
+      <div class="book-tags">
+        <span class="tag" style="--tag-bg:rgba(108,99,255,.12);--tag-color:#a29bfe;--tag-border:rgba(108,99,255,.2)">Autobiographie</span>
+        <span class="tag" style="--tag-bg:rgba(0,212,255,.1);--tag-color:#00d4ff;--tag-border:rgba(0,212,255,.2)">Enfance</span>
+      </div>
+      <div class="book-progress-row">
+        <div class="book-prog-bar"><div class="book-prog-fill" id="prog-boite" style="width:0%"></div></div>
+        <div class="book-prog-pct" id="pct-boite">0%</div>
+      </div>
+      <button class="book-btn" onclick="openBook('boite')">Étudier ce roman →</button>
+    </div>
+    <div class="book-card" style="--book-accent:#ff6b9d;--book-color1:rgba(255,107,157,0.1);--book-color2:rgba(255,209,102,0.05)">
+      <span class="book-emoji">👑</span>
+      <div class="book-title">Antigone</div>
+      <div class="book-author">Jean Anouilh</div>
+      <div class="book-tags">
+        <span class="tag" style="--tag-bg:rgba(255,107,157,.12);--tag-color:#ff6b9d;--tag-border:rgba(255,107,157,.2)">Tragédie</span>
+        <span class="tag" style="--tag-bg:rgba(255,209,102,.1);--tag-color:#ffd166;--tag-border:rgba(255,209,102,.2)">Résistance</span>
+      </div>
+      <div class="book-progress-row">
+        <div class="book-prog-bar"><div class="book-prog-fill" id="prog-antigone" style="width:0%"></div></div>
+        <div class="book-prog-pct" id="pct-antigone">0%</div>
+      </div>
+      <button class="book-btn" onclick="openBook('antigone')">Étudier ce roman →</button>
+    </div>
+    <div class="book-card" style="--book-accent:#06d6a0;--book-color1:rgba(6,214,160,0.08);--book-color2:rgba(108,99,255,0.05)">
+      <span class="book-emoji">⚖️</span>
+      <div class="book-title">Le Dernier Jour d'un Condamné</div>
+      <div class="book-author">Victor Hugo</div>
+      <div class="book-tags">
+        <span class="tag" style="--tag-bg:rgba(6,214,160,.12);--tag-color:#06d6a0;--tag-border:rgba(6,214,160,.2)">Roman engagé</span>
+        <span class="tag" style="--tag-bg:rgba(239,71,111,.1);--tag-color:#ef476f;--tag-border:rgba(239,71,111,.2)">Peine de mort</span>
+      </div>
+      <div class="book-progress-row">
+        <div class="book-prog-bar"><div class="book-prog-fill" id="prog-condamne" style="width:0%"></div></div>
+        <div class="book-prog-pct" id="pct-condamne">0%</div>
+      </div>
+      <button class="book-btn" onclick="openBook('condamne')">Étudier ce roman →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ROMANS LIST -->
+<div class="page" id="page-romans">
+  <div class="section-title">📚 Choisir un roman</div>
+  <div class="books-grid">
+    <div class="book-card" onclick="openBook('boite')">
+      <span class="book-emoji">📖</span>
+      <div class="book-title">La Boîte à merveilles</div>
+      <div class="book-author">Ahmed Sefrioui • 1954</div>
+      <div class="book-tags">
+        <span class="tag">Autobiographie</span><span class="tag">Enfance</span><span class="tag">Fès</span>
+      </div>
+      <button class="book-btn">Ouvrir →</button>
+    </div>
+    <div class="book-card" onclick="openBook('antigone')">
+      <span class="book-emoji">👑</span>
+      <div class="book-title">Antigone</div>
+      <div class="book-author">Jean Anouilh • 1944</div>
+      <div class="book-tags">
+        <span class="tag">Tragédie</span><span class="tag">Résistance</span><span class="tag">Devoir</span>
+      </div>
+      <button class="book-btn">Ouvrir →</button>
+    </div>
+    <div class="book-card" onclick="openBook('condamne')">
+      <span class="book-emoji">⚖️</span>
+      <div class="book-title">Le Dernier Jour d'un Condamné</div>
+      <div class="book-author">Victor Hugo • 1829</div>
+      <div class="book-tags">
+        <span class="tag">Roman engagé</span><span class="tag">Justice</span><span class="tag">Humanisme</span>
+      </div>
+      <button class="book-btn">Ouvrir →</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOOK DETAIL -->
+<div class="page" id="page-book">
+  <div class="book-header" id="book-header"></div>
+  <div class="book-tabs" id="book-tabs"></div>
+  <div id="book-tab-contents"></div>
+</div>
+
+<!-- FLASHCARDS MAIN -->
+<div class="page" id="page-flashcards-main">
+  <div class="section-title">🃏 Flashcards</div>
+  <div class="books-grid">
+    <div class="book-card" onclick="openFlashcards('boite')">
+      <span class="book-emoji">📖</span>
+      <div class="book-title">La Boîte à merveilles</div>
+      <div class="book-author">32 flashcards disponibles</div>
+      <button class="book-btn">Commencer →</button>
+    </div>
+    <div class="book-card" onclick="openFlashcards('antigone')">
+      <span class="book-emoji">👑</span>
+      <div class="book-title">Antigone</div>
+      <div class="book-author">28 flashcards disponibles</div>
+      <button class="book-btn">Commencer →</button>
+    </div>
+    <div class="book-card" onclick="openFlashcards('condamne')">
+      <span class="book-emoji">⚖️</span>
+      <div class="book-title">Le Dernier Jour d'un Condamné</div>
+      <div class="book-author">26 flashcards disponibles</div>
+      <button class="book-btn">Commencer →</button>
+    </div>
+  </div>
+</div>
+
+<!-- FLASHCARD SESSION -->
+<div class="page" id="page-flashcard-session">
+  <div class="flashcard-controls">
+    <button class="btn btn-secondary" onclick="showPage('flashcards-main')">← Retour</button>
+    <span class="fc-count" id="fc-count">1 / 10</span>
+  </div>
+  <div class="flashcard-stage">
+    <div class="flashcard" id="flashcard-el" onclick="flipCard()">
+      <div class="fc-face fc-front">
+        <div>
+          <div class="fc-label">Question</div>
+          <div class="fc-text" id="fc-question"></div>
+        </div>
+      </div>
+      <div class="fc-face fc-back">
+        <div>
+          <div class="fc-label">Réponse</div>
+          <div class="fc-text" id="fc-answer"></div>
+          <div class="fc-sub" id="fc-detail"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fc-hint">Cliquez pour retourner la carte</div>
+  <div class="fc-nav">
+    <button class="fc-btn dont-know" onclick="fcVote(false)">✗ À revoir</button>
+    <button class="fc-btn" onclick="flipCard()">↺ Retourner</button>
+    <button class="fc-btn know" onclick="fcVote(true)">✓ Je sais</button>
+  </div>
+</div>
+
+<!-- QCM MAIN -->
+<div class="page" id="page-qcm-main">
+  <div class="section-title">✏️ QCM interactifs</div>
+  <div class="books-grid">
+    <div class="book-card" onclick="openQCM('boite')">
+      <span class="book-emoji">📖</span>
+      <div class="book-title">La Boîte à merveilles</div>
+      <div class="book-author">15 questions par niveau</div>
+      <button class="book-btn">Commencer →</button>
+    </div>
+    <div class="book-card" onclick="openQCM('antigone')">
+      <span class="book-emoji">👑</span>
+      <div class="book-title">Antigone</div>
+      <div class="book-author">15 questions par niveau</div>
+      <button class="book-btn">Commencer →</button>
+    </div>
+    <div class="book-card" onclick="openQCM('condamne')">
+      <span class="book-emoji">⚖️</span>
+      <div class="book-title">Le Dernier Jour d'un Condamné</div>
+      <div class="book-author">15 questions par niveau</div>
+      <button class="book-btn">Commencer →</button>
+    </div>
+  </div>
+</div>
+
+<!-- QCM SESSION -->
+<div class="page" id="page-qcm">
+  <div class="qcm-header">
+    <button class="btn btn-secondary" onclick="showPage('qcm-main')">← Retour</button>
+    <div class="qcm-level-select" id="qcm-levels">
+      <button class="level-btn active" onclick="setQCMLevel('facile',this)">Facile</button>
+      <button class="level-btn" onclick="setQCMLevel('moyen',this)">Moyen</button>
+      <button class="level-btn" onclick="setQCMLevel('difficile',this)">Difficile</button>
+    </div>
+  </div>
+  <div class="qcm-progress">
+    <div class="qcm-prog-bar"><div class="qcm-prog-fill" id="qcm-prog"></div></div>
+    <div class="qcm-timer" id="qcm-timer">⏱ <span id="timer-sec">60</span>s</div>
+  </div>
+  <div id="qcm-question-area"></div>
+  <div class="qcm-results" id="qcm-results">
+    <div class="score-circle" id="score-circle">
+      <span class="score-num" id="score-num">0</span>
+      <span class="score-total" id="score-total">/ 0</span>
+    </div>
+    <div class="results-title" id="results-title">Résultat</div>
+    <div class="results-desc" id="results-desc"></div>
+    <div class="rec-box">
+      <div class="rec-title">📋 Recommandations</div>
+      <div class="rec-list" id="rec-list"></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="restartQCM()">Recommencer</button>
+      <button class="btn btn-secondary" onclick="showPage('dashboard')">Voir mes stats</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="page" id="page-dashboard">
+  <div class="section-title">📊 Tableau de bord</div>
+  <div class="dash-grid">
+    <div class="dash-card">
+      <div class="dash-card-title">Score moyen</div>
+      <div class="dash-big-num" id="dash-avg">—</div>
+      <div style="color:var(--text3);font-size:13px">sur tous les QCM</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-title">QCM terminés</div>
+      <div class="dash-big-num" id="dash-qcm">0</div>
+      <div style="color:var(--text3);font-size:13px">toutes œuvres confondues</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-title">Progression par roman</div>
+      <div class="roman-prog-list">
+        <div class="rpm-item">
+          <span class="rpm-emoji">📖</span>
+          <div class="rpm-info">
+            <div class="rpm-name">La Boîte à merveilles</div>
+            <div class="rpm-bar"><div class="rpm-fill" id="dash-prog-boite" style="width:0%;background:linear-gradient(90deg,#6c63ff,#00d4ff)"></div></div>
+          </div>
+          <div class="rpm-pct" id="dash-pct-boite">0%</div>
+        </div>
+        <div class="rpm-item">
+          <span class="rpm-emoji">👑</span>
+          <div class="rpm-info">
+            <div class="rpm-name">Antigone</div>
+            <div class="rpm-bar"><div class="rpm-fill" id="dash-prog-antigone" style="width:0%;background:linear-gradient(90deg,#ff6b9d,#ffd166)"></div></div>
+          </div>
+          <div class="rpm-pct" id="dash-pct-antigone">0%</div>
+        </div>
+        <div class="rpm-item">
+          <span class="rpm-emoji">⚖️</span>
+          <div class="rpm-info">
+            <div class="rpm-name">Le Dernier Jour</div>
+            <div class="rpm-bar"><div class="rpm-fill" id="dash-prog-condamne" style="width:0%;background:linear-gradient(90deg,#06d6a0,#6c63ff)"></div></div>
+          </div>
+          <div class="rpm-pct" id="dash-pct-condamne">0%</div>
+        </div>
+      </div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-title">Série quotidienne</div>
+      <div class="streak-display" id="streak-display"></div>
+      <div style="margin-top:12px;font-size:13px;color:var(--text3)" id="streak-text">Commencez dès aujourd'hui !</div>
+    </div>
+    <div class="dash-card grid-full">
+      <div class="dash-card-title">Badges obtenus</div>
+      <div class="badges-grid" id="badges-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHATBOT -->
+<div class="page" id="page-chatbot">
+  <div class="section-title">🤖 Assistant pédagogique</div>
+  <div class="chat-container">
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-suggestions" id="chat-suggestions">
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">Résumé Boîte à merveilles</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">Personnages Antigone</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">Thèmes Victor Hugo</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">Conseils pour le régional</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">Citation Sefrioui</button>
+    </div>
+    <div class="chat-input-area">
+      <input class="chat-input" id="chat-input" type="text" placeholder="Posez votre question..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chat-send" onclick="sendChat()">Envoyer →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="page" id="page-profile">
+  <div class="profile-header">
+    <div class="profile-avatar">🎓</div>
+    <div>
+      <div class="profile-name" id="prof-name">Élève de 1BAC</div>
+      <div class="profile-level" id="prof-level">Niveau 1 — Débutant</div>
+      <div class="profile-xp-bar"><div class="profile-xp-fill" id="prof-xp-fill" style="width:0%"></div></div>
+      <div style="font-size:12px;color:var(--text3);margin-top:4px" id="prof-xp-text">0 / 500 XP</div>
+    </div>
+  </div>
+  <div class="settings-section">
+    <div class="settings-title">⚙️ Paramètres</div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Mode sombre</div>
+        <div class="setting-desc">Changer entre clair et sombre</div>
+      </div>
+      <button class="toggle on" id="theme-toggle" onclick="toggleTheme()"></button>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Timer QCM</div>
+        <div class="setting-desc">Activer le chronomètre pour les QCM</div>
+      </div>
+      <button class="toggle on" id="timer-toggle" onclick="toggleTimerSetting()"></button>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Réinitialiser la progression</div>
+        <div class="setting-desc">Effacer toutes les données sauvegardées</div>
+      </div>
+      <button class="btn btn-secondary" onclick="resetData()" style="font-size:12px;padding:8px 14px">Réinitialiser</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- main-content -->
+</div><!-- app -->
+
+<script>
+// =====================================================
+// DATA – PÉDAGOGIQUE COMPLET
+// =====================================================
+const BOOKS = {
+  boite: {
+    id: 'boite',
+    emoji: '📖',
+    title: 'La Boîte à merveilles',
+    author: 'Ahmed Sefrioui',
+    year: '1954',
+    coverBg: 'linear-gradient(135deg,#6c63ff,#00d4ff)',
+    genre: 'Roman autobiographique',
+    summary: `<h3>Présentation générale</h3>
+<p><em>La Boîte à merveilles</em> est un roman autobiographique d'Ahmed Sefrioui, publié en 1954. L'auteur y raconte ses souvenirs d'enfance dans la médina de Fès, au début du XXe siècle. Sidi Mohammed, le narrateur, est un enfant sensible et solitaire qui trouve refuge dans sa précieuse boîte à merveilles, remplie d'objets brillants qu'il chérit comme des trésors.</p>
+<h3>Partie 1 – L'univers de l'enfance</h3>
+<p>Le récit s'ouvre sur la description du Dar Chouaf, la maison de l'enfance de Sidi Mohammed, dans le quartier populaire d'Al-Akkarine à Fès. Le narrateur évoque son monde intime : sa mère, Lalla Zoubida, douce et attentionnée ; son père, artisan tisserand ; et les voisines de la maison, notamment Lalla Aicha et sa fille Zineb. La vie s'écoule selon les rythmes du quartier, des prières et des traditions.</p>
+<h3>Partie 2 – Les épreuves du quotidien</h3>
+<p>Plusieurs événements viennent troubler la sérénité de cet univers : la ruine financière du père, les visites chez les saints, les maladies et les croyances populaires. La mère Lalla Zoubida cherche des solutions dans les pratiques magiques et religieuses. L'enfant observe tout avec étonnement et enregistre chaque détail de ce monde disparu.</p>
+<h3>Partie 3 – La mémoire et la nostalgie</h3>
+<p>Le roman se termine sur une note mélancolique. Sidi Mohammed grandit et comprend que ce monde de l'enfance est fragile et éphémère. La boîte à merveilles devient le symbole de la mémoire : garder le passé vivant malgré la fuite du temps. Le roman est un hymne à Fès, à la culture marocaine et à la mémoire de l'enfance.</p>`,
+    chapters: [
+      { title: "Présentation du Dar Chouaf", text: "Le narrateur décrit la maison de son enfance, le Dar Chouaf, une grande demeure dans la médina de Fès. Il présente les locataires : Lalla Aicha, veuve avec sa fille Zineb, et Rahma avec sa famille. La vie communautaire de la maison est décrite avec poésie. Sidi Mohammed révèle son caractère solitaire et son attachement à sa boîte à merveilles, une petite boîte en bois remplie d'objets brillants qui constituent son trésor personnel." },
+      { title: "La vie quotidienne et les personnages", text: "Ce chapitre développe les portraits des principaux personnages. La mère Lalla Zoubida est présentée comme une femme belle, généreuse et superstitieuse. Le père est un artisan tisserand qui travaille dans le quartier des tisserands. Le quartier d'Al-Akkarine vit au rythme des souks, des appels à la prière et des visites entre voisins. L'enfant observe tout avec curiosité et sensibilité." },
+      { title: "Les difficultés financières", text: "Le père de Sidi Mohammed rencontre des difficultés économiques importantes. Son métier de tisserand ne lui rapporte plus assez. La famille doit s'adapter à cette nouvelle situation précaire. La mère cherche des solutions dans les visites aux saints et les pratiques magiques. La pauvreté est décrite avec pudeur et dignité, sans jamais tomber dans le misérabilisme." },
+      { title: "Maladies et croyances populaires", text: "Sidi Mohammed tombe malade. Sa mère, désespérée, a recours aux guérisseuses traditionnelles, aux fétiches et aux formules magiques. Ces pratiques reflètent les croyances populaires de la société marocaine traditionnelle. Le récit mélange la réalité quotidienne et le monde des djinns, des saints et du surnaturel, créant une atmosphère onirique particulière." },
+      { title: "Les fêtes et cérémonies", text: "Le roman évoque les grandes fêtes religieuses : l'Aïd, le mouloud, les mariages et les cérémonies du quartier. Ces moments de célébration collective contrastent avec la solitude habituelle du narrateur. Sidi Mohammed observe les préparatifs avec émerveillement. Les traditions et rituels sont décrits avec précision, constituant un véritable témoignage ethnographique sur la vie marocaine traditionnelle." },
+      { title: "La médina de Fès", text: "Sefrioui consacre plusieurs passages à la description de la médina de Fès : ses ruelles, ses souks, ses mosquées, ses fontaines. La ville est présentée comme un personnage à part entière, vivant et respirant. Les différents quartiers sont décrits avec leurs métiers, leurs odeurs, leurs bruits. Fès apparaît comme le berceau d'une civilisation raffinée en train de disparaître." },
+      { title: "Dénouement et nostalgie", text: "Le roman se clôt sur la conscience aiguë que ce monde de l'enfance est révolu. Le narrateur adulte se retourne vers ses souvenirs avec nostalgie et tendresse. La boîte à merveilles, avec ses petits objets brillants sans grande valeur matérielle, symbolise la mémoire précieuse de l'enfance. Le message final est celui d'une écriture-témoignage : écrire pour ne pas oublier." }
+    ],
+    characters: [
+      { emoji: '👦', name: 'Sidi Mohammed', role: 'Narrateur / Personnage principal', desc: 'Enfant sensible et solitaire, il est le narrateur homodiégétique du roman. Introverti, il préfère la compagnie de sa boîte à merveilles aux jeux des autres enfants. Très observateur, il enregistre avec précision les détails de son environnement. Il représente l\'enfant artiste, incompris dans son milieu mais doté d\'une sensibilité exceptionnelle.' },
+      { emoji: '👩', name: 'Lalla Zoubida', role: 'La mère', desc: 'Mère aimante, douce et protectrice, elle est la figure centrale de l\'affection dans le roman. Croyante et superstitieuse, elle recourt aux pratiques magiques pour protéger sa famille. Elle représente la femme marocaine traditionnelle : généreuse, dévouée, mais aussi ancrée dans les croyances populaires de son époque.' },
+      { emoji: '👨', name: 'Le père', role: 'Le père artisan', desc: 'Tisserand de métier, il travaille dans le quartier des tisserands de Fès. Courageux et digne, il affronte les difficultés économiques sans se plaindre. Sa relation avec son fils est distante mais empreinte de respect. Il représente le monde artisanal marocain en déclin face aux transformations économiques du XXe siècle.' },
+      { emoji: '👩‍🦳', name: 'Lalla Aicha', role: 'Voisine et confidente', desc: 'Veuve habitant le Dar Chouaf, elle est la confidente de Lalla Zoubida. Solidaire et bienveillante, elle représente la solidarité féminine dans la communauté traditionnelle. Sa présence dans le roman illustre les liens sociaux forts qui unissaient les habitants d\'une même maison dans la médina.' },
+      { emoji: '👧', name: 'Zineb', role: 'Fille de Lalla Aicha', desc: 'Fille de Lalla Aicha, contemporaine de Sidi Mohammed. Elle est mentionnée dans plusieurs scènes de vie quotidienne. Sa présence illustre la cohabitation des générations dans la maison communautaire. Elle représente l\'enfance féminine, soumise à d\'autres codes et contraintes que l\'enfance masculine.' }
+    ],
+    themes: [
+      { icon: '💾', title: 'La mémoire et la nostalgie', desc: 'Le thème central du roman est la mémoire. L\'auteur adulte se souvient de son enfance avec nostalgie et tendresse. La boîte à merveilles est le symbole de cette mémoire : garder précieusement des objets en apparence sans valeur pour préserver le passé. L\'écriture devient elle-même un acte de mémoire, une résistance contre l\'oubli et le temps.' },
+      { icon: '🏘️', title: 'Le monde traditionnel marocain', desc: 'Sefrioui dresse un tableau ethnographique de la société marocaine traditionnelle du début du XXe siècle : l\'artisanat, les croyances populaires, les fêtes religieuses, l\'architecture de la médina, les rôles sociaux. Ce monde est présenté avec affection mais aussi avec lucidité sur sa fragilité face aux transformations modernisatrices.' },
+      { icon: '👦', title: 'L\'enfance et la solitude', desc: 'Sidi Mohammed est un enfant solitaire, différent des autres, qui trouve refuge dans son univers intérieur et sa boîte à merveilles. Cette solitude de l\'enfance sensible est un thème universel. Le roman explore comment un enfant construit son monde imaginaire pour faire face à la réalité quotidienne parfois difficile.' },
+      { icon: '🕌', title: 'La religion et la superstition', desc: 'L\'islam et les croyances populaires sont omniprésents dans le roman. La frontière entre pratique religieuse orthodoxe et superstition traditionnelle est floue. Les personnages vivent dans un univers où le surnaturel est présent dans le quotidien : djinns, saints, fétiches, incantations. Sefrioui observe ces pratiques avec tendresse et sans jugement.' },
+      { icon: '🏙️', title: 'Fès, ville sacrée', desc: 'La médina de Fès est présente comme un personnage vivant, presque sacré. Ses rues, ses mosquées, ses artisans, ses odeurs forment un décor essentiel. Sefrioui célèbre Fès comme le berceau de la civilisation marocaine, une ville millénaire en train de se transformer. Le roman est aussi un acte d\'amour envers cette ville.' }
+    ],
+    citations: [
+      { text: 'Ma boîte à merveilles ne contenait que des richesses sans valeur aux yeux des grandes personnes.', context: 'Sidi Mohammed parle de ses trésors personnels', tip: 'Illustre le thème de l\'enfance et de la différence de perception entre enfants et adultes. Utile pour parler du thème de la solitude et de l\'imaginaire.' },
+      { text: 'Fès est une ville pleine de prières, de rumeurs et de souvenirs.', context: 'Description de la médina de Fès', tip: 'Parfaite pour illustrer le thème de Fès comme personnage. Montre la dimension poétique du style de Sefrioui.' },
+      { text: 'Ma mère était belle, généreuse et superstitieuse. Elle croyait aux djinns, aux fétiches et à la puissance des saints.', context: 'Portrait de la mère Lalla Zoubida', tip: 'Utile pour le portrait des personnages et le thème de la religion/superstition. Montre la complexité du personnage maternel.' },
+      { text: 'Je vivais seul dans un monde que je m\'étais fabriqué, un monde où les objets brillants avaient une âme.', context: 'Sidi Mohammed évoque son monde imaginaire', tip: 'Citation essentielle sur le thème de la solitude et de l\'imaginaire. Montre le rapport particulier de l\'enfant aux objets.' }
+    ],
+    flashcards: [
+      { q: 'Quel est le vrai prénom de l\'auteur de La Boîte à merveilles ?', a: 'Ahmed Sefrioui', d: 'Né à Fès en 1915, Ahmed Sefrioui est l\'un des premiers romanciers marocains d\'expression française.' },
+      { q: 'Quelle est l\'année de publication de La Boîte à merveilles ?', a: '1954', d: 'Le roman a été publié chez Éditions du Seuil à Paris.' },
+      { q: 'Quel est le nom du narrateur du roman ?', a: 'Sidi Mohammed', d: 'Le narrateur est un enfant qui raconte ses souvenirs d\'enfance à la première personne.' },
+      { q: 'Comment s\'appelle la maison où se déroule l\'essentiel du récit ?', a: 'Le Dar Chouaf', d: 'C\'est une maison traditionnelle de la médina de Fès avec une cour intérieure.' },
+      { q: 'Quel est le métier du père de Sidi Mohammed ?', a: 'Tisserand', d: 'Il travaille dans le quartier des tisserands, un artisanat traditionnel de Fès.' },
+      { q: 'Quel est le prénom de la mère du narrateur ?', a: 'Lalla Zoubida', d: 'Elle est décrite comme belle, généreuse et superstitieuse.' },
+      { q: 'Quel genre littéraire représente ce roman ?', a: 'Roman autobiographique', d: 'L\'auteur y raconte ses propres souvenirs d\'enfance de manière romancée.' },
+      { q: 'Quel est le symbole central du roman ?', a: 'La boîte à merveilles', d: 'Cette boîte en bois contenant des objets brillants symbolise la mémoire, l\'enfance et l\'imaginaire.' },
+      { q: 'Dans quelle ville marocaine se déroule le roman ?', a: 'Fès', d: 'La médina de Fès est décrite avec précision et constitue un décor essentiel du récit.' },
+      { q: 'Comment s\'appelle la voisine confidente de la mère ?', a: 'Lalla Aicha', d: 'Veuve qui habite le Dar Chouaf, elle est la confidente de Lalla Zoubida.' },
+      { q: 'Quel est le principal thème de la fin du roman ?', a: 'La nostalgie et la mémoire', d: 'Le narrateur adulte se souvient de son enfance avec tendresse et mélancolie.' },
+      { q: 'Quelle est la tonalité générale du roman ?', a: 'Poétique et nostalgique', d: 'Le roman est écrit dans un style lyrique qui magnifie les souvenirs d\'enfance.' }
+    ],
+    qcm: {
+      facile: [
+        { q: 'Qui est l\'auteur de La Boîte à merveilles ?', opts: ['Victor Hugo', 'Ahmed Sefrioui', 'Jean Anouilh', 'Tahar Ben Jelloun'], ans: 1, expl: 'Ahmed Sefrioui est l\'auteur de ce roman autobiographique publié en 1954. Né à Fès, il est l\'un des premiers romanciers marocains d\'expression française.', conseil: 'Retenez bien les auteurs et dates de publication de chaque roman du programme.' },
+        { q: 'Dans quelle ville marocaine se passe le roman ?', opts: ['Casablanca', 'Marrakech', 'Fès', 'Rabat'], ans: 2, expl: 'L\'action se déroule dans la médina de Fès, ville natale de l\'auteur. Fès est décrite avec précision et constitue presque un personnage vivant dans le roman.', conseil: 'Connaître le cadre géographique est essentiel pour comprendre le contexte culturel du roman.' },
+        { q: 'Quel est le genre littéraire de La Boîte à merveilles ?', opts: ['Roman policier', 'Roman autobiographique', 'Conte fantastique', 'Roman épistolaire'], ans: 1, expl: 'C\'est un roman autobiographique car l\'auteur y raconte ses propres souvenirs d\'enfance. Sefrioui = auteur = narrateur Sidi Mohammed.', conseil: 'L\'autobiographie se définit par l\'identité entre auteur, narrateur et personnage principal.' },
+        { q: 'Quel est le métier du père de Sidi Mohammed ?', opts: ['Marchand', 'Médecin', 'Tisserand', 'Enseignant'], ans: 2, expl: 'Le père est tisserand, un artisanat traditionnel de Fès. Ce métier illustre le monde artisanal de la médina en déclin au début du XXe siècle.', conseil: 'Les métiers des personnages sont souvent liés aux thèmes du roman : ici, l\'artisanat traditionnel menacé.' },
+        { q: 'Que contient la boîte à merveilles de Sidi Mohammed ?', opts: ['Des bijoux précieux', 'Des pièces d\'or', 'Des objets brillants sans grande valeur', 'Des photos de famille'], ans: 2, expl: 'La boîte contient des objets brillants sans valeur marchande : des morceaux de verre coloré, des boutons dorés... Leur valeur est symbolique et affective.', conseil: 'La boîte à merveilles symbolise l\'imaginaire de l\'enfant et sa façon de voir le monde différemment des adultes.' }
+      ],
+      moyen: [
+        { q: 'Quel est le nom de la maison où vit la famille de Sidi Mohammed ?', opts: ['Dar el Makhzen', 'Dar Chouaf', 'Dar Batha', 'Dar Jamai'], ans: 1, expl: 'Le Dar Chouaf (la "maison de l\'observation") est le lieu central du roman. C\'est une maison traditionnelle avec une cour intérieure où cohabitent plusieurs familles.', conseil: 'Les noms des lieux en arabe ont souvent une signification symbolique dans le roman.' },
+        { q: 'Quel thème central le roman développe-t-il principalement ?', opts: ['La guerre et la résistance', 'La mémoire et la nostalgie de l\'enfance', 'L\'amour romantique', 'La politique coloniale'], ans: 1, expl: 'La mémoire et la nostalgie sont les thèmes centraux. Le narrateur adulte se souvient de son enfance avec tendresse. L\'écriture est un acte de mémoire contre l\'oubli.', conseil: 'Pour chaque roman, identifiez le thème central et les thèmes secondaires pour mieux structurer vos réponses.' },
+        { q: 'Comment Lalla Zoubida réagit-elle aux maladies et difficultés ?', opts: ['Elle consulte uniquement un médecin', 'Elle prie seulement à la mosquée', 'Elle a recours aux pratiques magiques et aux visites aux saints', 'Elle reste indifférente'], ans: 2, expl: 'Lalla Zoubida est superstitieuse et a recours aux guérisseuses, fétiches et visites aux tombeaux des saints. Cela illustre le mélange entre islam populaire et croyances traditionnelles.', conseil: 'Le thème de la religion et de la superstition est fondamental dans ce roman. Préparez des exemples précis.' },
+        { q: 'Pourquoi Sidi Mohammed est-il solitaire ?', opts: ['Il est puni par ses parents', 'Il est sensible, différent et préfère son monde imaginaire', 'Il n\'a pas de voisins', 'Il est malade en permanence'], ans: 1, expl: 'Sidi Mohammed est naturellement introverti et sensible. Il préfère contempler ses objets brillants et observer le monde plutôt que de jouer avec les autres enfants. Sa solitude est choisie, non imposée.', conseil: 'Le personnage du narrateur représente l\'artiste ou l\'écrivain en devenir, différent des autres.' },
+        { q: 'Quel rôle joue Fès dans le roman ?', opts: ['Simple décor sans importance', 'Personnage vivant, symbole de la civilisation marocaine', 'Lieu de conflit politique', 'Ville moderne et occidentalisée'], ans: 1, expl: 'Fès est bien plus qu\'un décor : elle est décrite comme un organisme vivant, avec ses odeurs, ses bruits, ses artisans. Elle symbolise la civilisation marocaine traditionnelle que l\'auteur veut immortaliser.', conseil: 'Analysez comment l\'espace géographique peut devenir un personnage symbolique dans un roman.' }
+      ],
+      difficile: [
+        { q: 'Comment appelle-t-on le type de narration utilisé dans La Boîte à merveilles ?', opts: ['Narration omnisciente à la troisième personne', 'Narration homodiégétique à la première personne', 'Narration hétérodiégétique', 'Narration polyphonique'], ans: 1, expl: 'La narration homodiégétique signifie que le narrateur est un personnage de l\'histoire (Sidi Mohammed). Il raconte à la première personne ses propres expériences, créant une forte dimension autobiographique.', conseil: 'Maîtrisez les concepts narratologiques : homodiégétique (narrateur = personnage) vs hétérodiégétique (narrateur extérieur).' },
+        { q: 'Quelle figure de style caractérise principalement le style de Sefrioui ?', opts: ['L\'ironie', 'Le lyrisme et les images poétiques', 'L\'argumentation logique', 'Le registre comique'], ans: 1, expl: 'Le style de Sefrioui est essentiellement lyrique : il utilise des métaphores, des comparaisons et des images poétiques pour décrire la réalité. Chaque objet, chaque scène est transfiguré par le regard poétique de l\'enfant.', conseil: 'Identifiez et analysez les figures de style dans les extraits : elles révèlent la vision du monde de l\'auteur.' },
+        { q: 'En quoi La Boîte à merveilles constitue-t-elle un document ethnographique ?', opts: ['Elle décrit des guerres historiques', 'Elle témoigne des traditions, métiers et croyances de la société marocaine traditionnelle', 'Elle propose une analyse économique du Maroc', 'Elle décrit uniquement la vie politique'], ans: 1, expl: 'Au-delà de l\'aspect autobiographique, le roman documente avec précision les pratiques sociales, les métiers artisanaux, les fêtes religieuses et les croyances populaires de la médina de Fès au début du XXe siècle. C\'est un témoignage culturel irremplaçable.', conseil: 'Un roman peut avoir plusieurs fonctions : artistique, autobiographique, sociologique. Développez cette idée dans vos réponses.' },
+        { q: 'Quelle est la double temporalité du roman ?', opts: ['Passé et futur', 'Le temps de l\'enfance vécu et le regard de l\'adulte qui se souvient', 'Le matin et le soir', 'Le présent et le conditionnel'], ans: 1, expl: 'Le roman joue sur deux temps : l\'enfant qui vit les événements et l\'adulte qui se souvient et les raconte. Cette double perspective crée une distance nostalgique et une richesse narrative. L\'adulte commente les perceptions de l\'enfant avec le recul de l\'âge.', conseil: 'La double temporalité est une caractéristique fondamentale de l\'autobiographie. Repérez les marques de l\'adulte narrateur.' },
+        { q: 'Pourquoi Sefrioui choisit-il d\'écrire en français et non en arabe ?', opts: ['Par obligation scolaire', 'Pour toucher un public plus large et témoigner de la culture marocaine à l\'international', 'Par rejet de la culture arabe', 'Par hasard'], ans: 1, expl: 'Sefrioui écrit en français — langue coloniale — pour faire connaître la culture marocaine au monde. Ce choix paradoxal (utiliser la langue de l\'autre pour parler de soi) est caractéristique de la littérature maghrébine d\'expression française. C\'est un acte d\'affirmation culturelle.', conseil: 'La question de la langue d\'écriture dans la littérature postcoloniale est un sujet riche pour les analyses avancées.' }
+      ]
+    }
+  },
+
+  antigone: {
+    id: 'antigone',
+    emoji: '👑',
+    title: 'Antigone',
+    author: 'Jean Anouilh',
+    year: '1944',
+    coverBg: 'linear-gradient(135deg,#ff6b9d,#ffd166)',
+    genre: 'Tragédie moderne',
+    summary: `<h3>Présentation générale</h3>
+<p><em>Antigone</em> est une pièce de théâtre de Jean Anouilh, créée et publiée en 1944, pendant l'Occupation allemande en France. Anouilh reprend le mythe grec de Sophocle (441 av. J.-C.) et le transpose dans un contexte moderne. La pièce oppose Antigone, jeune femme qui choisit de mourir pour ses convictions, à Créon, le roi pragmatique qui défend la raison d'État.</p>
+<h3>Acte I – Le prologue et l'exposition</h3>
+<p>Le Prologue présente tous les personnages sur scène, comme dans un tableau vivant, et annonce d'emblée leur destin tragique. Antigone, fille d'Œdipe, refuse d'accepter le décret de Créon qui interdit d'enterrer son frère Polynice, tué en attaquant Thèbes. Son frère Étéocle, défenseur de la cité, a droit à des funérailles honorables, mais Polynice sera laissé sans sépulture.</p>
+<h3>Acte II – La confrontation</h3>
+<p>Antigone a déjà accompli son geste : elle a recouvert le corps de Polynice de terre. Arrêtée, elle est amenée devant Créon. La longue scène de confrontation entre les deux personnages est le cœur de la pièce. Créon tente de convaincre Antigone de renoncer, de vivre, d'accepter le compromis. Antigone refuse catégoriquement. Elle dit "non" à la vie si elle ne peut vivre selon ses valeurs.</p>
+<h3>Acte III – Le dénouement tragique</h3>
+<p>Antigone est condamnée à être emmurée vivante. Son fiancé Hémon, fils de Créon, prend sa défense en vain. Antigone est emmenée. Dans la chambre funèbre, elle se pend. Hémon se suicide sur son corps. La reine Eurydice, mère d'Hémon, se suicide également. Créon reste seul, vainqueur misérable d'une victoire vide de sens.</p>`,
+    chapters: [
+      { title: 'Le Prologue – Présentation des personnages', text: 'Le Prologue entre en scène et présente chaque personnage au public, comme s\'il commentait une photo de famille. Il annonce que tout est déjà joué, que la tragédie va se dérouler inéluctablement. Ce procédé brechtien crée une distanciation : le spectateur sait ce qui va arriver, l\'intérêt est dans le "comment" et le "pourquoi", pas le "quoi".' },
+      { title: 'Antigone et la nourrice', text: 'Antigone rentre tôt le matin, couverte de terre. La nourrice, personnage populaire et maternel, la gronde affectueusement, pensant qu\'elle a passé la nuit dehors par aventure amoureuse. Antigone est étrangement tendre avec elle. Cette scène douce-amère anticipe la tragédie : Antigone sait ce qu\'elle a fait et accepte déjà son destin.' },
+      { title: 'Antigone et Ismène', text: 'Ismène, sœur d\'Antigone, tente de la dissuader d\'enterrer Polynice. Ismène est pragmatique, raisonnable, elle veut vivre. Antigone est inflexible. Ce dialogue oppose deux façons d\'être au monde : l\'acceptation des règles vs la fidélité absolue à ses convictions. Ismène représente la majorité silencieuse qui s\'adapte ; Antigone, la minorité qui résiste.' },
+      { title: 'La grande scène avec Créon', text: 'C\'est la scène centrale de la pièce. Créon essaie d\'abord de sauver Antigone discrètement. Il lui révèle que Polynice et Étéocle étaient tous deux mauvais, que la distinction entre le héros et le traître est arbitraire. Il plaide pour le réalisme politique, la nécessité des compromis. Antigone refuse ce pragmatisme. Pour elle, agir selon sa conscience importe plus que de vivre.' },
+      { title: 'Antigone et Hémon', text: 'Hémon, fiancé d\'Antigone, intervient pour plaider la cause de sa bien-aimée auprès de son père Créon. La confrontation père-fils révèle l\'opposition entre l\'amour absolu d\'Hémon et le devoir politique de Créon. Hémon choisit Antigone contre son père. Cette scène illustre le thème du conflit entre amour et pouvoir, entre loyauté filiale et conviction personnelle.' },
+      { title: 'Le dénouement – La mort d\'Antigone', text: 'Antigone est emmenée pour être emmurée vivante. Elle dicte une lettre touchante à un garde, exprimant sa solitude et son incompréhension face à sa propre mort. Dans la chambre funèbre, elle se pend. Hémon, découvrant son corps, se suicide. Eurydice, apprenant la mort de son fils, se donne également la mort. Créon reste seul, vainqueur d\'une victoire qui ne signifie plus rien.' }
+    ],
+    characters: [
+      { emoji: '👸', name: 'Antigone', role: 'Personnage principal / Héroïne tragique', desc: 'Jeune femme petite, brune et obstinée, fille d\'Œdipe. Elle incarne l\'absolu, l\'intransigeance et la fidélité à ses convictions. Elle choisit la mort plutôt que de trahir ses valeurs. Son "non" au roi représente la résistance de la conscience individuelle face au pouvoir politique. Pour Anouilh, elle est l\'archétype de la pureté qui refuse les compromis.' },
+      { emoji: '👨‍💼', name: 'Créon', role: 'Le roi / L\'antagoniste', desc: 'Roi de Thèbes, oncle d\'Antigone. Il n\'est pas un monstre mais un homme de pouvoir conscient de ses responsabilités. Il est las, résigné, et tente de sauver Antigone. Il représente le pragmatisme politique : il sait que ses décisions sont arbitraires mais les maintient pour des raisons d\'ordre. Sa victoire finale est une défaite morale totale.' },
+      { emoji: '👩', name: 'Ismène', role: 'La sœur d\'Antigone', desc: 'Belle, blonde, souriante, Ismène est l\'opposé de sa sœur. Elle choisit de vivre en acceptant les règles. Elle n\'est pas lâche mais raisonnable. Elle représente la majorité des gens qui s\'adaptent au monde tel qu\'il est, par opposition à Antigone qui le refuse. Elle illustre le dilemme moral entre prudence et conviction.' },
+      { emoji: '💑', name: 'Hémon', role: 'Le fiancé d\'Antigone', desc: 'Fils de Créon et fiancé d\'Antigone. Il aime Antigone passionnément et choisit de mourir avec elle plutôt que de vivre sans elle. Son suicide représente le triomphe de l\'amour sur le pouvoir politique. Sa confrontation avec son père illustre le conflit des générations et des valeurs.' },
+      { emoji: '👶', name: 'La Nourrice', role: 'Personnage populaire', desc: 'Vieille femme simple et aimante qui a élevé Antigone. Elle ne comprend pas les enjeux politiques mais incarne l\'amour maternel inconditionnel. Sa présence apporte une dimension humaine et populaire qui contraste avec la grandeur tragique de la pièce. Elle représente le monde ordinaire qui continue malgré les tragédies.' }
+    ],
+    themes: [
+      { icon: '🚫', title: 'Le refus et la résistance', desc: 'Le thème central est le "non" d\'Antigone. Elle refuse de se soumettre à une loi qu\'elle juge injuste. Ce refus absolu, sans compromis, est à la fois sa grandeur et sa condamnation. Dans le contexte de 1944, ce refus résonne comme une métaphore de la Résistance française face à l\'Occupation. Résister, c\'est choisir ses valeurs contre sa propre survie.' },
+      { icon: '⚖️', title: 'La loi humaine vs la loi divine', desc: 'Antigone s\'oppose à la loi humaine (le décret de Créon) au nom d\'une loi supérieure, divine ou morale. Elle estime avoir le devoir d\'enterrer son frère selon les rites religieux. Ce conflit entre loi positive et loi naturelle/divine est au cœur de la pièce. La question posée : quelle loi prime quand elles s\'opposent ?' },
+      { icon: '🌹', title: 'L\'absolu contre le relatif', desc: 'Antigone représente l\'absolu : elle veut tout ou rien, sans compromis. Créon représente le relatif : il accepte de faire des compromis pour gouverner. Cette opposition philosophique est fondamentale. Anouilh ne donne pas de réponse claire : les deux positions ont leur cohérence. Le spectateur doit choisir son camp.' },
+      { icon: '💀', title: 'La mort choisie', desc: 'Antigone ne subit pas la mort, elle la choisit. Elle refuse de vivre autrement que selon ses convictions. La mort devient ainsi un acte de liberté, la seule liberté qui reste quand toutes les autres sont confisquées. Cette vision existentialiste de la mort libre anticipe les grandes œuvres de Sartre et Camus.' },
+      { icon: '👑', title: 'Le pouvoir et ses limites', desc: 'Créon illustre les contradictions du pouvoir : pour gouverner, il doit prendre des décisions arbitraires qu\'il sait injustes. Le pouvoir corrompt non par malice mais par nécessité. La pièce interroge les limites du pouvoir politique face à la conscience individuelle. Même le roi le plus juste peut devenir tyran malgré lui.' }
+    ],
+    citations: [
+      { text: 'Je suis là pour dire non et pour mourir.', context: 'Antigone à Créon, lors de la confrontation centrale', tip: 'Citation essentielle qui résume la philosophie d\'Antigone. "Non" = refus des compromis, "mourir" = conséquence acceptée. Parfaite pour illustrer le thème de la résistance et de l\'absolu.' },
+      { text: 'Le bonheur... quel métier !', context: 'Antigone répond à Créon qui lui propose de vivre heureuse', tip: 'Antigone refuse le bonheur banal proposé par Créon. Pour elle, le bonheur sans valeurs n\'en est pas un. Illustre l\'opposition entre idéalisme et pragmatisme.' },
+      { text: 'Créon, vous avez dit "oui". Moi, je peux encore dire "non".', context: 'Antigone revendique sa liberté de refus face au roi', tip: 'Le "non" d\'Antigone contre le "oui" de Créon incarne l\'opposition liberté/pouvoir. Citation parfaite pour développer le thème de la résistance.' },
+      { text: 'On est tous pareils, les morts. On est tous propres alors.', context: 'Antigone évoque la mort dans sa lettre finale', tip: 'La mort comme égalité et pureté. Montre la dimension spirituelle de la vision d\'Antigone.' }
+    ],
+    flashcards: [
+      { q: 'En quelle année Jean Anouilh a-t-il écrit Antigone ?', a: '1944', d: 'La pièce a été créée à Paris pendant l\'Occupation allemande, ce qui lui donne une dimension politique forte.' },
+      { q: 'De quel auteur grec Anouilh s\'inspire-t-il ?', a: 'Sophocle (441 av. J.-C.)', d: 'Sophocle avait écrit une Antigone dans l\'Antiquité grecque. Anouilh modernise ce mythe.' },
+      { q: 'Pourquoi Antigone veut-elle enterrer Polynice ?', a: 'Par devoir religieux et moral envers son frère', d: 'Le droit d\'enterrer les morts selon les rites religieux était sacré dans l\'Antiquité grecque.' },
+      { q: 'Quel est le décret de Créon ?', a: 'Interdire les funérailles de Polynice, accusé de trahison', d: 'Polynice a attaqué Thèbes et mérite donc, selon Créon, de rester sans sépulture.' },
+      { q: 'Quelle est la différence entre Antigone et Ismène face à ce dilemme ?', a: 'Antigone résiste, Ismène se soumet pour survivre', d: 'Ismène est pragmatique, Antigone est absolue dans ses convictions.' },
+      { q: 'Comment Antigone meurt-elle ?', a: 'Elle se pend dans la chambre funèbre où elle était emprisonnée', d: 'Condamnée à être emmurée vivante, elle choisit de se donner la mort elle-même.' },
+      { q: 'Quelle est la signification du "non" d\'Antigone ?', a: 'Refus des compromis, fidélité absolue à ses valeurs', d: 'Dire "non" au pouvoir, c\'est exercer la seule liberté qui reste : refuser.' },
+      { q: 'Qui est Hémon dans la pièce ?', a: 'Le fils de Créon et fiancé d\'Antigone', d: 'Il choisit de mourir avec Antigone, illustrant le conflit entre amour et pouvoir.' },
+      { q: 'En quoi la pièce est-elle une métaphore de 1944 ?', a: 'Elle symbolise la résistance contre le régime d\'occupation', d: 'Le refus d\'Antigone évoque la résistance des Français face à l\'Occupation nazie.' },
+      { q: 'Que représente Créon dans la pièce ?', a: 'Le pragmatisme politique, la raison d\'État', d: 'Créon n\'est pas un tyran cruel mais un homme de pouvoir contraint par ses responsabilités.' }
+    ],
+    qcm: {
+      facile: [
+        { q: 'Qui est l\'auteur d\'Antigone (version 1944) ?', opts: ['Victor Hugo', 'Molière', 'Jean Anouilh', 'Corneille'], ans: 2, expl: 'Jean Anouilh (1910-1987) est un dramaturge français qui a réécrit le mythe grec d\'Antigone en 1944, pendant l\'Occupation allemande.', conseil: 'Ne confondez pas avec Sophocle qui a écrit l\'Antigone antique.' },
+        { q: 'Que fait Antigone pour déclencher la tragédie ?', opts: ['Elle vole le trésor royal', 'Elle enterre son frère Polynice malgré l\'interdiction', 'Elle tente d\'assassiner Créon', 'Elle fuit Thèbes'], ans: 1, expl: 'Antigone recouvre le corps de son frère Polynice de terre, accomplissant ainsi les rites funéraires interdits par le décret de Créon.', conseil: 'L\'acte d\'enterrement est symbolique : c\'est l\'opposition entre loi divine (enterrer les morts) et loi humaine (décret du roi).' },
+        { q: 'Quelle est la relation entre Créon et Antigone ?', opts: ['Ils sont amis', 'Créon est l\'oncle d\'Antigone', 'Ils sont frère et sœur', 'Créon est le père d\'Antigone'], ans: 1, expl: 'Créon est l\'oncle d\'Antigone. Il est le frère de Jocaste, mère d\'Antigone. Cette relation familiale rend le conflit encore plus tragique.', conseil: 'Connaissez bien l\'arbre généalogique de la famille royale de Thèbes.' },
+        { q: 'Comment finit la pièce d\'Antigone ?', opts: ['Antigone épouse Hémon', 'Créon libère Antigone', 'Antigone, Hémon et Eurydice meurent', 'La paix est conclue'], ans: 2, expl: 'C\'est une triple mort tragique : Antigone se pend, Hémon se suicide sur son corps, et Eurydice (mère d\'Hémon) se donne également la mort.', conseil: 'Le dénouement tragique est caractéristique de la tragédie : les personnages vertueux meurent, le survivant (Créon) est malheureux.' },
+        { q: 'Que représente le personnage d\'Ismène ?', opts: ['La résistance absolue', 'La pragmatisme et l\'adaptation', 'La folie', 'Le pouvoir politique'], ans: 1, expl: 'Ismène représente ceux qui choisissent de vivre en s\'adaptant aux règles, même injustes. Elle n\'est pas lâche mais raisonnable. Elle est le contraire de sa sœur Antigone.', conseil: 'Analyser les personnages comme des symboles opposés enrichit vos réponses.' }
+      ],
+      moyen: [
+        { q: 'Quelle est la portée politique de la pièce en 1944 ?', opts: ['Elle critique la monarchie', 'Elle évoque la résistance face à l\'occupation', 'Elle défend le communisme', 'Elle prône la monarchie absolue'], ans: 1, expl: 'Jouée pendant l\'Occupation nazie en France, la pièce est lue comme une allégorie : Antigone représente les résistants, Créon représente le pouvoir occupant. Anouilh reste ambigu volontairement.', conseil: 'Reliez toujours les œuvres à leur contexte historique : cela enrichit votre analyse.' },
+        { q: 'Quelle différence oppose Antigone à Créon philosophiquement ?', opts: ['L\'idéalisme absolu vs le pragmatisme relatif', 'La jeunesse vs la vieillesse', 'La femme vs l\'homme', 'Le pauvre vs le riche'], ans: 0, expl: 'Antigone représente l\'absolu : tout ou rien, sans compromis. Créon représente le relatif : on fait ce qu\'on peut avec les contraintes de la réalité. C\'est le conflit philosophique central de la pièce.', conseil: 'Cette opposition philosophique est fondamentale pour le régional. Maîtrisez les arguments des deux côtés.' },
+        { q: 'Quel procédé dramaturgique Anouilh utilise-t-il dans le Prologue ?', opts: ['Le monologue intérieur', 'La distanciation brechtienne', 'Le dialogue socratique', 'Le discours indirect libre'], ans: 1, expl: 'Le Prologue annonce d\'emblée le destin de tous les personnages, comme dans le théâtre épique de Brecht. Cela crée une distanciation : le spectateur sait ce qui va arriver, l\'intérêt est dans l\'analyse des motivations, pas dans le suspense.', conseil: 'La distanciation brechtiennes est une notion importante en littérature théâtrale.' },
+        { q: 'Pourquoi Créon refuse-t-il de changer de décision même quand il le pourrait ?', opts: ['Par cruauté personnelle', 'Par souci de l\'ordre et de la légitimité du pouvoir', 'Par peur d\'Antigone', 'Par jalousie'], ans: 1, expl: 'Créon sait que son décret est arbitraire, mais il le maintient car céder devant une rebelle affaiblirait son autorité et déstabiliserait l\'État. C\'est la logique froide du pouvoir politique.', conseil: 'Comprenez la logique interne de chaque personnage avant de la juger moralement.' }
+      ],
+      difficile: [
+        { q: 'En quoi la mort d\'Antigone peut-elle être analysée comme un acte de liberté ?', opts: ['C\'est une punition subie passivement', 'C\'est une mort choisie, seule liberté restante', 'C\'est un acte de folie', 'C\'est un sacrifice pour Créon'], ans: 1, expl: 'Antigone choisit sa mort : elle ne la subit pas. Dans une situation où toutes ses libertés sont confisquées, refuser de vivre autrement que selon ses valeurs est le dernier acte de liberté. Cette vision existentialiste annonce Sartre et Camus.', conseil: 'Reliez la pièce aux courants philosophiques : existentialisme, absurde, stoïcisme.' },
+        { q: 'Quel est le paradoxe central de la position de Créon à la fin de la pièce ?', opts: ['Il est riche mais malheureux', 'Il gagne politiquement mais perd humainement tout ce qui compte', 'Il est libéré de ses responsabilités', 'Il devient populaire'], ans: 1, expl: 'Créon "gagne" : son décret est maintenu, l\'ordre est préservé. Mais il a perdu son fils, sa femme, sa nièce. Sa victoire est une défaite totale sur le plan humain. C\'est le paradoxe tragique du pouvoir : il détruit ceux qui l\'exercent.', conseil: 'Le paradoxe est une figure rhétorique et conceptuelle essentielle pour analyser la tragédie.' },
+        { q: 'Comment interpréter le Prologue d\'Antigone sur le plan dramaturgique ?', opts: ['C\'est un résumé banal', 'C\'est un procédé de distanciation qui invite à l\'analyse plutôt qu\'à l\'émotion', 'C\'est une erreur de mise en scène', 'C\'est une prière'], ans: 1, expl: 'Le Prologue, en annonçant d\'emblée le destin de tous les personnages, supprime le suspense et transforme le spectateur en analyste. Inspiré du théâtre épique de Brecht, ce procédé invite à réfléchir aux motivations plutôt qu\'à s\'interroger sur l\'issue tragique.', conseil: 'Maîtrisez la distinction entre théâtre classique (suspense) et théâtre moderne (distanciation).' },
+        { q: 'En quoi Antigone représente-t-elle le mythe de la pureté selon Anouilh ?', opts: ['Elle est physiquement parfaite', 'Elle refuse tout compromis avec le monde imparfait', 'Elle est très pieuse', 'Elle est immortelle'], ans: 1, expl: 'Pour Anouilh, Antigone incarne la pureté absolue : elle refuse tout compromis, toute demi-mesure. Elle préfère mourir pure plutôt que de vivre en acceptant les compromis du monde réel. C\'est l\'archétype de l\'idéaliste qui ne peut survivre dans un monde politique et imparfait.', conseil: 'L\'opposition pureté/compromis est centrale dans l\'interprétation d\'Anouilh. Développez-la dans toute analyse.' }
+      ]
+    }
+  },
+
+  condamne: {
+    id: 'condamne',
+    emoji: '⚖️',
+    title: 'Le Dernier Jour d\'un Condamné',
+    author: 'Victor Hugo',
+    year: '1829',
+    coverBg: 'linear-gradient(135deg,#06d6a0,#6c63ff)',
+    genre: 'Roman engagé / Plaidoyer',
+    summary: `<h3>Présentation générale</h3>
+<p><em>Le Dernier Jour d'un Condamné</em> est un roman de Victor Hugo publié en 1829, quand Hugo avait 27 ans. C\'est un plaidoyer poignant contre la peine de mort, écrit à la première personne par un condamné anonyme qui relate les pensées et les émotions des dernières heures précédant son exécution.</p>
+<h3>Structure et narration</h3>
+<p>Le roman est présenté comme un journal intime trouvé après l\'exécution. Le condamné est anonyme : son crime n\'est jamais mentionné. Cette anonymat est un choix littéraire fort : Hugo veut que le lecteur s\'identifie au condamné, quelle que soit sa faute. Le roman est divisé en 49 chapitres courts qui suivent les dernières semaines, puis les dernières heures du condamné.</p>
+<h3>Le procès intérieur</h3>
+<p>Le condamné vit une agonie psychologique intense. Il alterne entre espoir et désespoir, lucidité et délire. Il pense à sa petite fille Marie, à sa mère, à sa vie passée. Il observe avec horreur les préparatifs de son exécution : la toilette du condamné, la foule qui attend, le bourreau. Ses pensées révèlent un homme capable d\'émotions profondes, de tendresse, de réflexion.</p>
+<h3>Le message politique et humaniste</h3>
+<p>Hugo ne cherche pas à excuser le condamné mais à humaniser celui qui va mourir. Son argument principal : aucune société n\'a le droit de tuer un être humain. La peine de mort est une barbarie qui déshonore la société qui la pratique. Le roman anticipe les grandes luttes humanistes du XIXe et XXe siècles pour l\'abolition de la peine de mort.</p>`,
+    chapters: [
+      { title: 'La condamnation et la cellule', text: 'Le narrateur apprend qu\'il est condamné à mort. Il décrit sa cellule à Bicêtre avec précision : le froid, l\'obscurité, les graffitis laissés par les condamnés précédents. Cette découverte le frappe : d\'autres ont été dans la même situation, ont eu les mêmes pensées et sont morts. La cellule devient un microcosme de l\'horreur systémique de la peine de mort.' },
+      { title: 'La vie en prison – observations sociales', text: 'En prison, le condamné observe ses compagnons de cellule : les forçats, les prisonniers de droit commun. Cette observation lui donne l\'occasion de dénoncer les conditions inhumaines des prisons françaises du XIXe siècle. Hugo, par la voix de son personnage, critique le système pénitentiaire tout entier comme une machine à fabriquer des criminels plutôt qu\'à les réhabiliter.' },
+      { title: 'Pensées et délires – le tourment intérieur', text: 'Le condamné vit une véritable torture psychologique. Les heures s\'étirent à l\'infini. Il revit sa vie, ses erreurs, ses joies passées. Ses pensées dérivent vers le délire : il imagine des portes qui s\'ouvrent, des grâces qui arrivent. Cet état mental entre veille et folie illustre comment la peine de mort est une torture psychologique qui commence bien avant l\'exécution.' },
+      { title: 'La visite de la petite Marie', text: 'C\'est l\'un des moments les plus émouvants du roman. La petite fille du condamné lui rend visite, mais elle ne le reconnaît pas : pour elle, son père n\'est plus le même homme. Cette scène déchirante illustre les ravages de la peine de mort sur les familles innocentes. Les enfants des condamnés sont aussi des victimes, condamnés à grandir sans père.' },
+      { title: 'La préparation à l\'exécution', text: 'Le matin de l\'exécution, le bourreau et ses assistants procèdent à la "toilette du condamné" : on lui coupe les cheveux, on lui ôte son col. Ces préparatifs sont décrits avec un réalisme glaçant. La foule se masse pour assister à l\'exécution comme à un spectacle. Hugo dénonce le côté barbare et voyeur de l\'exécution publique qui ravale la mort d\'un homme au rang de divertissement.' },
+      { title: 'Les derniers instants – le trajet et la guillotine', text: 'Le condamné est conduit à travers Paris dans un tombereau. La foule crie, se moque, certains pleurent. Le condamné observe tout avec une acuité terrible. Il pense à Marie, à sa mère. À l\'échafaud, les dernières lignes du roman sont: "Quatre heures..." C\'est tout. L\'interruption narrative mime l\'interruption de la vie. Hugo laisse le silence parler.' }
+    ],
+    characters: [
+      { emoji: '👤', name: 'Le condamné (narrateur)', role: 'Personnage principal / Narrateur', desc: 'Il est volontairement anonyme. Son crime n\'est jamais mentionné. Hugo veut que le lecteur s\'identifie à lui universellement. C\'est un homme cultivé, sensible, capable de tendresse et de réflexion profonde. Son anonymat est un argument politique fort : n\'importe qui pourrait être à sa place.' },
+      { emoji: '👧', name: 'Marie', role: 'La fille du condamné', desc: 'La petite fille du condamné symbolise l\'innocence brisée par la machine judiciaire. Quand elle rend visite à son père en prison, elle ne le reconnaît plus. Cette scène est la plus émouvante du roman et l\'argument le plus fort de Hugo : même si le condamné mérite sa peine, sa fille innocente est condamnée à souffrir.' },
+      { emoji: '🔱', name: 'Le bourreau', role: 'Représentant du système', desc: 'Le bourreau apparaît à la fin du roman pour procéder à la "toilette du condamné". Il est décrit comme un personnage froid, professionnel, accomplissant son travail sans affect. Pour Hugo, le bourreau n\'est pas un monstre mais le visage humain d\'un système inhumain. C\'est la banalité du mal.' },
+      { emoji: '📜', name: 'Le système judiciaire', role: 'Antagoniste abstrait', desc: 'Le vrai antagoniste n\'est pas une personne mais le système judiciaire et la société qui l\'approuve. Hugo démontre que la peine de mort est une violence collective, une barbarie légalisée. La société qui condamne à mort se rend coupable d\'un meurtre prémédité et de sang-froid, pire que le crime qu\'elle punit.' }
+    ],
+    themes: [
+      { icon: '⚖️', title: 'Le plaidoyer contre la peine de mort', desc: 'C\'est le thème principal et le but avoué du roman. Hugo argumente que la peine de mort est une barbarie. Ses arguments : elle est irréversible (si une erreur judiciaire est commise, on ne peut pas rendre la vie à l\'exécuté) ; elle est inefficace (elle ne dissuade pas les criminels) ; elle est cruelle (la torture psychologique de l\'attente est pire que la mort elle-même).' },
+      { icon: '🧠', title: 'La torture psychologique', desc: 'Hugo décrit avec précision les souffrances mentales du condamné dans l\'attente de sa mort. L\'incertitude, l\'espoir et le désespoir alternent, créant une torture psychologique insupportable. Cette description montre que la peine de mort commence bien avant l\'exécution et constitue en elle-même une barbarie.' },
+      { icon: '👨‍👩‍👧', title: 'L\'humanisme et la dignité humaine', desc: 'Hugo refuse de voir dans le condamné un être inférieur ou un monstre. Il lui donne des pensées profondes, des émotions tendres, une vie intérieure riche. L\'argument humaniste central : tout être humain a une dignité intrinsèque que même la pire faute ne peut effacer. Ôter la vie à un homme, même criminel, c\'est nier cette dignité fondamentale.' },
+      { icon: '🏛️', title: 'La critique de la société', desc: 'Le roman est aussi une critique sociale. Hugo dénonce les conditions des prisons, la misère qui conduit au crime, le spectacle barbare des exécutions publiques auxquelles la foule assiste comme à un divertissement. La société punit le criminel sans s\'interroger sur les causes sociales qui ont mené à son crime.' },
+      { icon: '📝', title: 'L\'engagement littéraire', desc: 'Hugo invente avec ce roman le genre du plaidoyer romanesque. La littérature devient un instrument de combat politique et social. L\'auteur utilise la fiction pour défendre une cause réelle. Cette conception de la littérature engagée influencera toute la tradition humaniste française et mondiale du XIXe et XXe siècles.' }
+    ],
+    citations: [
+      { text: 'Condamné à mort ! Voilà cinq semaines que j\'habite avec cette pensée, toujours seul avec elle, toujours glacé de sa présence.', context: 'Ouverture du roman, les premières pensées du condamné', tip: 'Citation d\'ouverture essentielle. Illustre le thème de la torture psychologique. "Glacé de sa présence" : la mort personnifiée. Bonne pour l\'analyse stylistique.' },
+      { text: 'La société ne tue pas, elle châtie. C\'est la société qui a besoin d\'un châtiment.', context: 'Réflexion du condamné sur la justice', tip: 'Argument central contre la peine de mort : la société elle-même est coupable. Parfaite pour développer le thème du plaidoyer.' },
+      { text: 'Marie ! L\'enfant m\'a regardé d\'un air étonné. Elle ne m\'a pas reconnu.', context: 'La visite de la fille du condamné', tip: 'Moment le plus émouvant du roman. Illustre les victimes collatérales de la peine de mort : les familles innocentes.' },
+      { text: 'Quatre heures...', context: 'Les derniers mots du roman, juste avant l\'exécution', tip: 'Fin abrupte qui mime l\'interruption de la vie. L\'ellipse narrative est l\'effet le plus puissant du roman. Importante pour l\'analyse formelle.' }
+    ],
+    flashcards: [
+      { q: 'En quelle année Victor Hugo a-t-il publié ce roman ?', a: '1829', d: 'Hugo avait 27 ans. Le roman a été d\'abord publié anonymement, puis réédité avec une préface en 1832.' },
+      { q: 'Quel est le crime du condamné dans le roman ?', a: 'Le crime n\'est jamais mentionné', d: 'L\'anonymat du crime est un choix politique fort : Hugo veut que tout lecteur puisse s\'identifier au condamné.' },
+      { q: 'Quel est le genre littéraire de ce roman ?', a: 'Plaidoyer romanesque / Roman engagé', d: 'Hugo utilise la fiction pour défendre une cause réelle : l\'abolition de la peine de mort.' },
+      { q: 'Comment le roman est-il présenté formellement ?', a: 'Comme un journal intime trouvé après l\'exécution', d: 'Ce procédé narratif renforce le réalisme et l\'empathie du lecteur envers le condamné.' },
+      { q: 'Qui est Marie dans le roman ?', a: 'La petite fille du condamné', d: 'Sa visite est la scène la plus émouvante : elle ne reconnaît pas son père, illustrant les ravages sur les familles innocentes.' },
+      { q: 'Quel est le principal argument de Hugo contre la peine de mort ?', a: 'Elle est irréversible, barbare et inefficace', d: 'Si une erreur judiciaire est commise, on ne peut pas rendre la vie à l\'exécuté. La société commet elle-même un meurtre.' },
+      { q: 'Comment se terminent les dernières lignes du roman ?', a: '"Quatre heures..." – interruption abrupte', d: 'Cette ellipse narrative mimant l\'interruption de la vie est l\'effet le plus puissant du roman.' },
+      { q: 'Quelle période de la vie du condamné le roman couvre-t-il ?', a: 'Les dernières semaines et heures avant l\'exécution', d: 'Le roman couvre environ 6 semaines, du jugement à l\'exécution, avec de plus en plus de détails au fil des heures finales.' },
+      { q: 'Dans quelle ville se déroule principalement le roman ?', a: 'Paris (prison de Bicêtre, puis la Grève)', d: 'L\'exécution avait lieu sur la Place de Grève à Paris au XIXe siècle.' },
+      { q: 'En quoi ce roman est-il révolutionnaire pour son époque ?', a: 'Il humanise le condamné et fait de la littérature un outil de combat politique', d: 'Hugo invente le roman engagé moderne, où la fiction sert une cause politique et humaniste réelle.' }
+    ],
+    qcm: {
+      facile: [
+        { q: 'Qui est l\'auteur du Dernier Jour d\'un Condamné ?', opts: ['Émile Zola', 'Victor Hugo', 'Honoré de Balzac', 'Albert Camus'], ans: 1, expl: 'Victor Hugo (1802-1885) est l\'auteur de ce roman publié en 1829. Hugo est l\'un des plus grands écrivains de la littérature française, également connu pour Les Misérables et Notre-Dame de Paris.', conseil: 'Retenez les dates de naissance et de mort de Hugo ainsi que ses œuvres principales.' },
+        { q: 'Quelle est la cause défendue par Victor Hugo dans ce roman ?', opts: ['Le droit de vote', 'L\'abolition de la peine de mort', 'La liberté de la presse', 'L\'égalité hommes-femmes'], ans: 1, expl: 'Le roman est un plaidoyer contre la peine de mort. Hugo argumente que l\'État n\'a pas le droit de tuer un être humain, quelle que soit sa faute.', conseil: 'L\'engagement de l\'écrivain pour des causes sociales est un thème important au programme.' },
+        { q: 'Quel crime a commis le condamné dans le roman ?', opts: ['Assassinat', 'Vol', 'Son crime n\'est jamais mentionné', 'Trahison'], ans: 2, expl: 'Hugo refuse délibérément de nommer le crime. Ce choix est politique : l\'anonymat permet à tout lecteur de s\'identifier au condamné, renforçant ainsi l\'argument humaniste.', conseil: 'Les silences et absences dans un texte sont souvent aussi significatifs que ce qui est dit.' },
+        { q: 'Comment s\'appelle la petite fille du condamné ?', opts: ['Anne', 'Sophie', 'Marie', 'Claire'], ans: 2, expl: 'Marie est la fille du condamné. La scène où elle lui rend visite et ne le reconnaît pas est l\'une des plus émouvantes du roman.', conseil: 'Les personnages secondaires ont souvent une importance symbolique forte dans les romans étudiés.' },
+        { q: 'Quel type de narration Hugo utilise-t-il ?', opts: ['Troisième personne omnisciente', 'Première personne (journal intime)', 'Narration à la deuxième personne', 'Narrateur extérieur neutre'], ans: 1, expl: 'Le roman se présente comme un journal intime écrit par le condamné lui-même. Cette narration à la première personne crée une forte identification et empathie du lecteur.', conseil: 'Le choix du mode narratif est fondamental dans l\'analyse littéraire.' }
+      ],
+      moyen: [
+        { q: 'Quel est l\'effet de l\'anonymat du crime sur le lecteur ?', opts: ['Il crée du suspense', 'Il permet une identification universelle avec le condamné', 'Il rend le roman irréaliste', 'Il renforce la culpabilité du personnage'], ans: 1, expl: 'En ne mentionnant pas le crime, Hugo permet à chaque lecteur de s\'identifier au condamné. L\'argument humaniste devient ainsi universel : tout être humain mérite la dignité, quelle que soit sa faute.', conseil: 'Analysez toujours les choix narratifs en termes d\'effets sur le lecteur.' },
+        { q: 'Comment Hugo décrit-il la foule lors de l\'exécution ?', opts: ['Compatissante et silencieuse', 'Curieuse et voyeuriste, comme pour un spectacle', 'Indifférente', 'Protestante contre l\'exécution'], ans: 1, expl: 'Hugo décrit une foule avide de spectacle, qui assiste à l\'exécution comme à un divertissement. Il dénonce ainsi le côté barbare d\'une société qui fait de la mort d\'un homme un spectacle public.', conseil: 'La critique sociale à travers la description de la foule est un procédé récurrent chez Hugo.' },
+        { q: 'Quel est l\'argument central de Hugo sur la torture psychologique ?', opts: ['La prison est confortable', 'L\'attente de la mort est une torture pire que l\'exécution elle-même', 'Le condamné est insensible', 'La mort est rapide et sans douleur'], ans: 1, expl: 'Hugo démontre que l\'attente de l\'exécution – les semaines, les jours, les heures d\'anticipation de la mort – constitue une torture psychologique insupportable, plus cruelle que l\'exécution elle-même.', conseil: 'La description psychologique du condamné est l\'argument humaniste principal du roman.' },
+        { q: 'Quelle est la signification de la fin abrupte du roman ?', opts: ['Hugo a manqué de temps pour finir le roman', 'L\'ellipse mime l\'interruption brutale de la vie', 'Le condamné survit', 'C\'est une erreur d\'édition'], ans: 1, expl: 'Les derniers mots "Quatre heures..." et l\'interruption du texte miment l\'interruption brutale de la vie par la guillotine. C\'est un effet stylistique puissant qui donne au lecteur le sentiment physique de la mort.', conseil: 'Les procédés formels (ellipse, interruption) peuvent avoir une valeur symbolique forte.' }
+      ],
+      difficile: [
+        { q: 'En quoi Le Dernier Jour est-il fondateur de la littérature engagée moderne ?', opts: ['Car il invente le roman policier', 'Car il utilise la fiction comme outil de combat politique réel', 'Car il est le premier roman français', 'Car il est écrit en vers'], ans: 1, expl: 'Hugo invente avec ce roman l\'idée que la fiction littéraire peut servir une cause politique réelle. Il ne se contente pas de divertir mais veut transformer l\'opinion publique et la loi. Cette conception de l\'engagement littéraire influencera Zola (J\'accuse), Camus, Sartre et toute la tradition humaniste.', conseil: 'Situez les œuvres dans l\'histoire littéraire : leurs innovations formelles et idéologiques.' },
+        { q: 'En quoi Le Dernier Jour est-il fondateur de la littérature engagée moderne ?', opts: ['Car il invente le roman policier', 'Car il utilise la fiction comme outil de combat politique réel', 'Car il est le premier roman français', 'Car il est écrit en vers'], ans: 1, expl: 'Hugo invente avec ce roman l\'idée que la fiction littéraire peut servir une cause politique réelle. Il ne se contente pas de divertir mais veut transformer l\'opinion publique et la loi. Cette conception de l\'engagement littéraire influencera Zola (J\'accuse), Camus, Sartre et toute la tradition humaniste.', conseil: 'Situez les œuvres dans l\'histoire littéraire : leurs innovations formelles et idéologiques.' },
+        { q: 'Comment Hugo contourne-t-il le risque de susciter de la sympathie pour le crime ?', opts: ['Il décrit un crime horrible pour choquer', 'Il tait le crime et se concentre sur l\'humanité du condamné', 'Il fait du condamné un innocent', 'Il justifie le crime'], ans: 1, expl: 'En ne mentionnant pas le crime, Hugo évite le débat sur la culpabilité. Il concentre l\'attention sur l\'être humain qui va mourir, pas sur l\'acte qu\'il a commis. L\'argument n\'est pas "il est innocent" mais "même coupable, il a une humanité que la mort ne peut pas légitimement effacer".', conseil: 'Comprendre la stratégie argumentative d\'un auteur est une compétence essentielle en analyse littéraire.' },
+        { q: 'Quelle technique narrative crée le plus d\'empathie dans ce roman ?', opts: ['La description objective des faits', 'Le journal intime à la première personne qui donne accès aux pensées intimes', 'Le dialogue entre personnages', 'Le narrateur omniscient'], ans: 1, expl: 'La forme du journal intime à la première personne donne au lecteur un accès direct aux pensées, émotions et souffrances du condamné. Cette technique crée une identification maximale. Le lecteur vit de l\'intérieur l\'agonie psychologique du personnage, ce qui est l\'argument le plus puissant contre la peine de mort.', conseil: 'Analysez comment la forme narrative d\'un texte crée des effets spécifiques sur le lecteur.' },
+        { q: 'Quel courant littéraire du XIXe siècle ce roman préfigure-t-il ?', opts: ['Le surréalisme', 'Le réalisme social et l\'engagement humaniste', 'Le symbolisme', 'Le dadaïsme'], ans: 1, expl: 'Le roman préfigure le réalisme social et l\'engagement humaniste qui caractérisera les grandes œuvres de Hugo (Les Misérables) et plus tard Zola (le naturalisme). L\'idée qu\'un romancier doit s\'engager pour les opprimés, documenter les injustices sociales, est au cœur de cette tradition.', conseil: 'Reliez les œuvres aux courants littéraires et situez-les dans l\'histoire de la littérature française.' }
+      ]
+    }
+  }
+};
+
+// =====================================================
+// APP STATE
+// =====================================================
+let state = {
+  currentBook: null,
+  currentFC: [],
+  fcIndex: 0,
+  fcKnow: 0,
+  qcmBook: null,
+  qcmLevel: 'facile',
+  qcmQuestions: [],
+  qcmIndex: 0,
+  qcmScore: 0,
+  qcmAnswered: false,
+  qcmTimer: null,
+  qcmTimerSec: 60,
+  timerEnabled: true
+};
+
+function loadStats() {
+  return JSON.parse(localStorage.getItem('rbacc_stats') || JSON.stringify({
+    qcmDone: 0,
+    scores: [],
+    fcSeen: 0,
+    streak: 0,
+    lastDay: null,
+    xp: 0,
+    progBoite: 0, progAntigone: 0, progCondamne: 0,
+    badges: [],
+    qcmByBook: {}
+  }));
+}
+function saveStats(s) { localStorage.setItem('rbacc_stats', JSON.stringify(s)); }
+
+function getSettings() {
+  return JSON.parse(localStorage.getItem('rbacc_settings') || '{"theme":"dark","timer":true}');
+}
+function saveSettings(s) { localStorage.setItem('rbacc_settings', JSON.stringify(s)); }
+
+// =====================================================
+// INIT
+// =====================================================
+window.addEventListener('DOMContentLoaded', () => {
+  const settings = getSettings();
+  document.documentElement.setAttribute('data-theme', settings.theme);
+  state.timerEnabled = settings.timer !== false;
+  document.getElementById('theme-toggle').classList.toggle('on', settings.theme === 'dark');
+  document.getElementById('timer-toggle').classList.toggle('on', state.timerEnabled);
+  
+  updateStreak();
+  updateUI();
+  renderDashboard();
+  initChatbot();
+  
+  // PWA
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault(); deferredPrompt = e;
+    document.getElementById('install-btn').classList.add('visible');
+  });
+  document.getElementById('install-btn').onclick = () => {
+    if(deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; }
+  };
+});
+
+function updateStreak() {
+  const s = loadStats();
+  const today = new Date().toDateString();
+  if(s.lastDay !== today) {
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    if(s.lastDay === yesterday) { s.streak = (s.streak||0)+1; }
+    else if(s.lastDay !== today) { s.streak = 1; }
+    s.lastDay = today;
+    saveStats(s);
+  }
+  document.getElementById('streak-count').textContent = s.streak;
+  document.getElementById('home-streak').textContent = s.streak;
+}
+
+function updateUI() {
+  const s = loadStats();
+  const avg = s.scores.length ? Math.round(s.scores.reduce((a,b)=>a+b,0)/s.scores.length) : null;
+  document.getElementById('home-qcm-done').textContent = s.qcmDone;
+  document.getElementById('home-avg').textContent = avg !== null ? avg+'%' : '—';
+  document.getElementById('home-fc-done').textContent = s.fcSeen;
+  
+  // XP
+  const xp = s.xp || 0;
+  const level = Math.floor(xp/500)+1;
+  const pct = ((xp%500)/500)*100;
+  document.getElementById('sidebar-level').textContent = 'Niveau '+level;
+  document.getElementById('sidebar-xp').textContent = (xp%500)+' / 500 XP';
+  document.getElementById('sidebar-xp-fill').style.width = pct+'%';
+  document.getElementById('prof-name').textContent = 'Élève de 1BAC';
+  document.getElementById('prof-level').textContent = `Niveau ${level} — ${level<3?'Débutant':level<6?'Intermédiaire':'Expert'}`;
+  document.getElementById('prof-xp-fill').style.width = pct+'%';
+  document.getElementById('prof-xp-text').textContent = `${xp%500} / 500 XP`;
+  
+  // Book progress
+  ['boite','antigone','condamne'].forEach(b => {
+    const p = s['prog'+b.charAt(0).toUpperCase()+b.slice(1)] || 0;
+    const el = document.getElementById('prog-'+b);
+    const pel = document.getElementById('pct-'+b);
+    if(el) el.style.width = p+'%';
+    if(pel) pel.textContent = p+'%';
+  });
+}
+
+function renderDashboard() {
+  const s = loadStats();
+  const avg = s.scores.length ? Math.round(s.scores.reduce((a,b)=>a+b,0)/s.scores.length) : null;
+  document.getElementById('dash-avg').textContent = avg !== null ? avg+'%' : '—';
+  document.getElementById('dash-qcm').textContent = s.qcmDone;
+  
+  ['boite','antigone','condamne'].forEach(b => {
+    const p = s['prog'+b.charAt(0).toUpperCase()+b.slice(1)] || 0;
+    document.getElementById('dash-prog-'+b).style.width = p+'%';
+    document.getElementById('dash-pct-'+b).textContent = p+'%';
+  });
+  
+  // Streak
+  const streak = s.streak || 0;
+  const sd = document.getElementById('streak-display');
+  sd.innerHTML = '';
+  for(let i=6;i>=0;i--) {
+    const d = document.createElement('div');
+    d.className = 'streak-day'+(i===0?' today':i<streak?' done':'');
+    const days=['D','L','M','M','J','V','S'];
+    d.textContent = days[(new Date().getDay()-i+7)%7];
+    sd.appendChild(d);
+  }
+  document.getElementById('streak-text').textContent = streak > 1 ? `🔥 ${streak} jours consécutifs !` : 'Commencez dès aujourd\'hui !';
+  
+  // Badges
+  const allBadges = [
+    {id:'first_qcm', emoji:'🎯', label:'Premier QCM', cond: s.qcmDone >= 1},
+    {id:'fc10', emoji:'🃏', label:'10 flashcards', cond: s.fcSeen >= 10},
+    {id:'score80', emoji:'⭐', label:'Score 80%+', cond: s.scores.some(x=>x>=80)},
+    {id:'streak3', emoji:'🔥', label:'3 jours de suite', cond: s.streak >= 3},
+    {id:'qcm10', emoji:'🏆', label:'10 QCM terminés', cond: s.qcmDone >= 10},
+    {id:'perfect', emoji:'💎', label:'Score parfait', cond: s.scores.some(x=>x===100)},
+    {id:'boite_complete', emoji:'📖', label:'Boîte maîtrisée', cond: (s.progBoite||0)>=80},
+    {id:'all_books', emoji:'🌟', label:'Tous les romans', cond: (s.progBoite||0)>0&&(s.progAntigone||0)>0&&(s.progCondamne||0)>0},
+  ];
+  const bg = document.getElementById('badges-grid');
+  bg.innerHTML = allBadges.map(b=>`
+    <div class="badge-item ${b.cond?'earned':''}">
+      <span>${b.emoji}</span> ${b.label}${b.cond?'':' 🔒'}
+    </div>`).join('');
+}
+
+// =====================================================
+// NAVIGATION
+// =====================================================
+function showPage(id, title) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const page = document.getElementById('page-'+id);
+  if(page) page.classList.add('active');
+  const titles = {
+    home:'Accueil', romans:'Romans', book:'Roman', 'flashcards-main':'Flashcards',
+    'flashcard-session':'Flashcards', 'qcm-main':'QCM', qcm:'QCM',
+    dashboard:'Tableau de bord', chatbot:'Assistant IA', profile:'Profil'
+  };
+  document.getElementById('page-title').textContent = title || titles[id] || id;
+  const navMap = {home:'home',romans:'romans','flashcards-main':'flashcards-main','qcm-main':'qcm-main',dashboard:'dashboard',profile:'profile',chatbot:'chatbot'};
+  const navBtns = document.querySelectorAll('.nav-item');
+  navBtns.forEach(btn => {
+    const onclick = btn.getAttribute('onclick');
+    if(onclick && onclick.includes("'"+id+"'")) btn.classList.add('active');
+    if(id==='book'&&onclick&&onclick.includes("'romans'")) btn.classList.add('active');
+    if(id==='flashcard-session'&&onclick&&onclick.includes("'flashcards-main'")) btn.classList.add('active');
+    if(id==='qcm'&&onclick&&onclick.includes("'qcm-main'")) btn.classList.add('active');
+  });
+  if(id==='dashboard') renderDashboard();
+  updateUI();
+  // Close sidebar on mobile
+  if(window.innerWidth<=768) { document.getElementById('sidebar').classList.remove('open'); }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+function toggleTheme() {
+  const settings = getSettings();
+  const newTheme = settings.theme === 'dark' ? 'light' : 'dark';
+  settings.theme = newTheme;
+  saveSettings(settings);
+  document.documentElement.setAttribute('data-theme', newTheme);
+  document.getElementById('theme-toggle').classList.toggle('on', newTheme==='dark');
+}
+
+function toggleTimerSetting() {
+  const settings = getSettings();
+  settings.timer = !settings.timer;
+  state.timerEnabled = settings.timer;
+  saveSettings(settings);
+  document.getElementById('timer-toggle').classList.toggle('on', settings.timer);
+}
+
+function resetData() {
+  if(confirm('Êtes-vous sûr de vouloir réinitialiser toute votre progression ?')) {
+    localStorage.removeItem('rbacc_stats');
+    updateUI();
+    renderDashboard();
+    toast('Progression réinitialisée');
+  }
+}
+
+function toast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity 0.3s'; setTimeout(()=>t.remove(),300); }, 2500);
+}
+
+// =====================================================
+// BOOK PAGE
+// =====================================================
+function openBook(bookId) {
+  const book = BOOKS[bookId];
+  state.currentBook = bookId;
+  
+  document.getElementById('book-header').innerHTML = `
+    <div class="book-cover" style="background:${book.coverBg}">${book.emoji}</div>
+    <div class="book-info">
+      <h1>${book.title}</h1>
+      <div class="author">${book.author} • ${book.year}</div>
+      <div class="book-tags">
+        <span class="tag">${book.genre}</span>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <button class="btn btn-primary" onclick="openFlashcards('${bookId}')">🃏 Flashcards</button>
+        <button class="btn btn-secondary" onclick="openQCM('${bookId}')">✏️ QCM</button>
+      </div>
+    </div>`;
+  
+  const tabs = ['Résumé','Chapitres','Personnages','Thèmes','Citations','Flashcards','QCM'];
+  document.getElementById('book-tabs').innerHTML = tabs.map((t,i)=>
+    `<button class="book-tab ${i===0?'active':''}" onclick="switchTab(${i},this)">${t}</button>`
+  ).join('');
+  
+  document.getElementById('book-tab-contents').innerHTML = `
+    <div class="tab-content active" id="tab-0"><div class="summary-text">${book.summary}</div></div>
+    <div class="tab-content" id="tab-1">${renderChapters(book)}</div>
+    <div class="tab-content" id="tab-2">${renderCharacters(book)}</div>
+    <div class="tab-content" id="tab-3">${renderThemes(book)}</div>
+    <div class="tab-content" id="tab-4">${renderCitations(book)}</div>
+    <div class="tab-content" id="tab-5">${renderInlineFlashcards(book)}</div>
+    <div class="tab-content" id="tab-6">${renderInlineQCM(book)}</div>
+  `;
+  
+  // Update progress
+  const s = loadStats();
+  const key = 'prog'+bookId.charAt(0).toUpperCase()+bookId.slice(1);
+  if((s[key]||0)<20) { s[key]=20; addXP(50, s); saveStats(s); }
+  
+  showPage('book', book.title);
+}
+
+function switchTab(idx, btn) {
+  document.querySelectorAll('.book-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+idx).classList.add('active');
+}
+
+function renderChapters(book) {
+  return book.chapters.map((c,i)=>`
+    <div class="chapter-item" id="ch-${i}">
+      <div class="chapter-header" onclick="toggleChapter(${i})">
+        <div class="chapter-num">${i+1}</div>
+        <div class="chapter-title-text">${c.title}</div>
+        <span class="chapter-arrow">▾</span>
+      </div>
+      <div class="chapter-body">${c.text}</div>
+    </div>`).join('');
+}
+
+function toggleChapter(i) {
+  document.getElementById('ch-'+i).classList.toggle('open');
+}
+
+function renderCharacters(book) {
+  return `<div class="characters-grid">${book.characters.map(c=>`
+    <div class="char-card">
+      <div class="char-avatar">${c.emoji}</div>
+      <div class="char-name">${c.name}</div>
+      <div class="char-role">${c.role}</div>
+      <div class="char-desc">${c.desc}</div>
+    </div>`).join('')}</div>`;
+}
+
+function renderThemes(book) {
+  return book.themes.map(t=>`
+    <div class="theme-card">
+      <div class="theme-label">
+        <div class="theme-label-icon">${t.icon}</div>
+        ${t.title}
+      </div>
+      <div class="theme-desc">${t.desc}</div>
+    </div>`).join('');
+}
+
+function renderCitations(book) {
+  return book.citations.map(c=>`
+    <div class="citation-card">
+      <div class="citation-text">${c.text}</div>
+      <div class="citation-context">📍 ${c.context}</div>
+      <div class="citation-tip">💡 ${c.tip}</div>
+    </div>`).join('');
+}
+
+function renderInlineFlashcards(book) {
+  return `<div style="text-align:center;padding:20px">
+    <p style="color:var(--text2);margin-bottom:20px">${book.flashcards.length} flashcards disponibles pour ce roman</p>
+    <button class="btn btn-primary" onclick="openFlashcards('${book.id}')">🃏 Commencer les flashcards</button>
+  </div>`;
+}
+
+function renderInlineQCM(book) {
+  return `<div style="text-align:center;padding:20px">
+    <p style="color:var(--text2);margin-bottom:20px">QCM disponibles : Facile, Moyen, Difficile</p>
+    <button class="btn btn-primary" onclick="openQCM('${book.id}')">✏️ Commencer le QCM</button>
+  </div>`;
+}
+
+// =====================================================
+// FLASHCARDS
+// =====================================================
+function openFlashcards(bookId) {
+  const book = BOOKS[bookId];
+  state.currentBook = bookId;
+  state.currentFC = [...book.flashcards].sort(()=>Math.random()-0.5);
+  state.fcIndex = 0;
+  state.fcKnow = 0;
+  renderFlashcard();
+  showPage('flashcard-session', 'Flashcards – '+book.title);
+}
+
+function renderFlashcard() {
+  const fc = state.currentFC[state.fcIndex];
+  if(!fc) { endFlashcards(); return; }
+  document.getElementById('fc-count').textContent = `${state.fcIndex+1} / ${state.currentFC.length}`;
+  document.getElementById('fc-question').textContent = fc.q;
+  document.getElementById('fc-answer').textContent = fc.a;
+  document.getElementById('fc-detail').textContent = fc.d;
+  document.getElementById('flashcard-el').classList.remove('flipped');
+}
+
+function flipCard() {
+  document.getElementById('flashcard-el').classList.toggle('flipped');
+}
+
+function fcVote(know) {
+  if(know) state.fcKnow++;
+  const s = loadStats();
+  s.fcSeen = (s.fcSeen||0)+1;
+  addXP(10, s);
+  // Update progress
+  const key = 'prog'+state.currentBook.charAt(0).toUpperCase()+state.currentBook.slice(1);
+  s[key] = Math.min(100, (s[key]||0)+3);
+  saveStats(s);
+  state.fcIndex++;
+  if(state.fcIndex >= state.currentFC.length) endFlashcards();
+  else renderFlashcard();
+}
+
+function endFlashcards() {
+  const pct = Math.round((state.fcKnow/state.currentFC.length)*100);
+  toast(`✅ Flashcards terminées ! ${state.fcKnow}/${state.currentFC.length} connues`);
+  showPage('flashcards-main');
+}
+
+// =====================================================
+// QCM
+// =====================================================
+function openQCM(bookId) {
+  state.qcmBook = bookId;
+  state.qcmLevel = 'facile';
+  document.querySelectorAll('.level-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+  buildQCM();
+  showPage('qcm', 'QCM – '+BOOKS[bookId].title);
+}
+
+function setQCMLevel(level, btn) {
+  state.qcmLevel = level;
+  document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildQCM();
+}
+
+function buildQCM() {
+  const book = BOOKS[state.qcmBook];
+  state.qcmQuestions = [...(book.qcm[state.qcmLevel]||[])].sort(()=>Math.random()-0.5);
+  state.qcmIndex = 0;
+  state.qcmScore = 0;
+  document.getElementById('qcm-results').style.display = 'none';
+  clearInterval(state.qcmTimer);
+  renderQCMQuestion();
+}
+
+function renderQCMQuestion() {
+  const q = state.qcmQuestions[state.qcmIndex];
+  if(!q) { showQCMResults(); return; }
+  state.qcmAnswered = false;
+  const pct = (state.qcmIndex/state.qcmQuestions.length)*100;
+  document.getElementById('qcm-prog').style.width = pct+'%';
+  
+  const letters = ['A','B','C','D'];
+  document.getElementById('qcm-question-area').innerHTML = `
+    <div class="question-card">
+      <div class="question-num">Question ${state.qcmIndex+1} sur ${state.qcmQuestions.length}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options-list">
+        ${q.opts.map((o,i)=>`
+          <button class="option-btn" id="opt-${i}" onclick="answerQCM(${i})">
+            <span class="option-letter">${letters[i]}</span>
+            ${o}
+          </button>`).join('')}
+      </div>
+      <div class="explanation-box" id="expl-box"></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:16px">
+      <button class="btn btn-secondary" id="next-btn" onclick="nextQuestion()" style="display:none">Question suivante →</button>
+    </div>`;
+  
+  if(state.timerEnabled) startTimer();
+}
+
+function startTimer() {
+  clearInterval(state.qcmTimer);
+  state.qcmTimerSec = 60;
+  document.getElementById('timer-sec').textContent = state.qcmTimerSec;
+  state.qcmTimer = setInterval(()=>{
+    state.qcmTimerSec--;
+    document.getElementById('timer-sec').textContent = state.qcmTimerSec;
+    if(state.qcmTimerSec <= 0) {
+      clearInterval(state.qcmTimer);
+      if(!state.qcmAnswered) answerQCM(-1);
+    }
+  }, 1000);
+}
+
+function answerQCM(chosen) {
+  if(state.qcmAnswered) return;
+  state.qcmAnswered = true;
+  clearInterval(state.qcmTimer);
+  const q = state.qcmQuestions[state.qcmIndex];
+  const correct = q.ans;
+  const isRight = chosen === correct;
+  if(isRight) state.qcmScore++;
+  
+  document.querySelectorAll('.option-btn').forEach((b,i)=>{
+    b.disabled = true;
+    if(i===correct) b.classList.add('correct');
+    if(i===chosen && !isRight) b.classList.add('wrong');
+  });
+  
+  const explBox = document.getElementById('expl-box');
+  explBox.style.display = 'block';
+  explBox.className = 'explanation-box'+(isRight?'':' wrong-expl');
+  explBox.innerHTML = `<strong>${isRight?'✅ Correct !':'❌ Incorrect'}</strong><br>${q.expl}<br><br>💡 <em>${q.conseil}</em>`;
+  document.getElementById('next-btn').style.display = 'block';
+}
+
+function nextQuestion() {
+  state.qcmIndex++;
+  if(state.qcmIndex >= state.qcmQuestions.length) showQCMResults();
+  else renderQCMQuestion();
+}
+
+function showQCMResults() {
+  clearInterval(state.qcmTimer);
+  const total = state.qcmQuestions.length;
+  const score = state.qcmScore;
+  const pct = total > 0 ? Math.round((score/total)*100) : 0;
+  
+  const s = loadStats();
+  s.qcmDone = (s.qcmDone||0)+1;
+  s.scores = [...(s.scores||[]), pct];
+  const key = 'prog'+state.qcmBook.charAt(0).toUpperCase()+state.qcmBook.slice(1);
+  s[key] = Math.min(100, (s[key]||0)+15);
+  addXP(pct, s);
+  saveStats(s);
+  
+  document.getElementById('qcm-question-area').innerHTML = '';
+  document.getElementById('qcm-prog').style.width = '100%';
+  
+  const resultsEl = document.getElementById('qcm-results');
+  resultsEl.style.display = 'block';
+  
+  const deg = Math.round((pct/100)*360);
+  document.getElementById('score-circle').style.setProperty('--score-deg', deg+'deg');
+  document.getElementById('score-num').textContent = score;
+  document.getElementById('score-total').textContent = '/ '+total;
+  
+  let title, desc, recs;
+  if(pct>=80) {
+    title='Excellent ! 🌟'; desc='Très bonne maîtrise de cette œuvre.';
+    recs='Continuez avec le niveau supérieur ou passez à un autre roman.';
+  } else if(pct>=60) {
+    title='Bien ! 👍'; desc='Bonne progression, quelques lacunes à combler.';
+    recs='Relisez les thèmes et citations. Recommencez ce QCM.';
+  } else {
+    title='À améliorer 📚'; desc='Il faut revoir le contenu de cette œuvre.';
+    recs='Consultez les résumés, personnages et thèmes avant de recommencer.';
+  }
+  
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-desc').textContent = desc+` Score : ${pct}%`;
+  document.getElementById('rec-list').textContent = recs;
+  
+  updateUI();
+  renderDashboard();
+  toast(`${title} ${score}/${total}`);
+}
+
+function restartQCM() {
+  buildQCM();
+}
+
+function addXP(amount, s) {
+  s.xp = (s.xp||0)+amount;
+}
+
+// =====================================================
+// CHATBOT
+// =====================================================
+const KB = [
+  { keys: ['boîte','boite à merveilles','sefrioui'], resp: `📖 <strong>La Boîte à merveilles</strong> d'Ahmed Sefrioui est un roman autobiographique publié en 1954. Il raconte l'enfance de Sidi Mohammed dans la médina de Fès. La boîte à merveilles — une petite boîte remplie d'objets brillants — symbolise la mémoire et l'imaginaire de l'enfance. Les thèmes principaux sont la nostalgie, le monde traditionnel marocain, et la solitude de l'enfant sensible.` },
+  { keys: ['antigone','anouilh'], resp: `👑 <strong>Antigone</strong> de Jean Anouilh (1944) est une tragédie moderne. Antigone refuse d'obéir au décret de Créon qui interdit d'enterrer son frère Polynice. Elle dit "non" au roi et accepte la mort plutôt que de trahir ses convictions. La pièce explore le conflit entre la loi humaine et la conscience individuelle, et symbolise la résistance face au pouvoir.` },
+  { keys: ['dernier jour','condamné','hugo','peine de mort'], resp: `⚖️ <strong>Le Dernier Jour d'un Condamné</strong> de Victor Hugo (1829) est un plaidoyer contre la peine de mort. Un condamné anonyme relate ses dernières heures avant l'exécution. Hugo ne mentionne pas le crime pour permettre au lecteur de s'identifier. Les thèmes centraux sont l'humanisme, la torture psychologique de l'attente, et la critique de la justice.` },
+  { keys: ['sidi mohammed','narrateur','boite'], resp: `👦 Sidi Mohammed est le narrateur de La Boîte à merveilles. C'est un enfant sensible et solitaire, reflet autobiographique de l'auteur Ahmed Sefrioui. Il observe le monde avec curiosité et trouve refuge dans sa boîte à merveilles. Sa solitude représente l'artiste en devenir, différent des autres enfants.` },
+  { keys: ['lalla zoubida','mère','zoubida'], resp: `👩 Lalla Zoubida est la mère de Sidi Mohammed dans La Boîte à merveilles. Elle est belle, généreuse et superstitieuse. Croyante, elle recourt aux pratiques magiques et aux visites aux saints pour protéger sa famille. Elle représente la femme marocaine traditionnelle, dévouée et ancrée dans les croyances populaires.` },
+  { keys: ['créon','creon','roi'], resp: `👨‍💼 Créon est le roi de Thèbes dans Antigone. Il n'est pas un tyran cruel mais un homme pragmatique, conscient des contraintes du pouvoir. Il tente de sauver Antigone mais maintient son décret par souci de l'ordre. À la fin, il "gagne" politiquement mais perd tout humainement : son fils, sa femme, sa nièce.` },
+  { keys: ['marie','fille','condamné'], resp: `👧 Marie est la petite fille du condamné dans Le Dernier Jour. La scène où elle rend visite à son père en prison et ne le reconnaît pas est la plus émouvante du roman. Elle symbolise les victimes innocentes de la peine de mort : les familles qui souffrent sans avoir commis de faute.` },
+  { keys: ['thème','thèmes','principal'], resp: `📚 Les thèmes principaux par roman :\n• Boîte à merveilles : mémoire, enfance, tradition marocaine\n• Antigone : résistance, absolu vs compromis, loi divine vs loi humaine\n• Dernier Jour : peine de mort, humanisme, torture psychologique\nChaque roman aborde aussi la liberté, la dignité humaine et le rapport à la mort.` },
+  { keys: ['conseil','révision','préparer','régional'], resp: `💡 Conseils pour le régional de français :\n1. Maîtrisez les résumés et la structure des œuvres\n2. Retenez les noms et rôles des personnages principaux\n3. Apprenez 2-3 citations importantes par roman\n4. Préparez des exemples concrets pour chaque thème\n5. Entraînez-vous avec les QCM régulièrement\n6. Révisez les figures de style et la terminologie littéraire` },
+  { keys: ['citation','cite','citer'], resp: `💬 Citations importantes :\n• "Je suis là pour dire non et pour mourir." (Antigone)\n• "Ma boîte à merveilles ne contenait que des richesses sans valeur." (Sefrioui)\n• "Condamné à mort ! Voilà cinq semaines que j'habite avec cette pensée." (Hugo)\nCes citations illustrent les thèmes centraux et sont parfaites pour les questions d'examen.` },
+  { keys: ['personnage','personnages'], resp: `👥 Personnages principaux :\n• Sidi Mohammed (narrateur de La Boîte à merveilles)\n• Lalla Zoubida (mère attentionnée et superstitieuse)\n• Antigone (héroïne qui choisit la mort par conviction)\n• Créon (roi pragmatique)\n• Le condamné anonyme (Hugo)\n• Marie (fille du condamné)\nVoulez-vous des détails sur un personnage en particulier ?` },
+  { keys: ['fès','medina','ville'], resp: `🕌 Fès dans La Boîte à merveilles : La médina de Fès est presque un personnage vivant. Sefrioui la décrit avec ses ruelles, souks, mosquées, artisans. Elle représente la civilisation marocaine traditionnelle. Le Dar Chouaf (la maison) est au cœur du récit. Fès symbolise un monde en train de disparaître que l'auteur veut immortaliser par l'écriture.` },
+  { keys: ['genre','type','autobiograph'], resp: `📖 Les genres des trois œuvres :\n• La Boîte à merveilles : Roman autobiographique (auteur = narrateur)\n• Antigone : Tragédie moderne (inspirée de Sophocle, 441 av. J.-C.)\n• Le Dernier Jour : Roman engagé / Plaidoyer romanesque\nConnaître les genres est essentiel pour contextualiser vos analyses.` },
+  { keys: ['analyse','analyser','examen','méthode'], resp: `📝 Méthode d'analyse au régional :\n1. Identifiez le genre et le contexte historique\n2. Résumez l'intrigue en 2-3 lignes\n3. Présentez les personnages principaux et leurs rôles\n4. Développez les thèmes avec des exemples précis du texte\n5. Utilisez des citations pour appuyer vos arguments\n6. Concluez avec la portée universelle de l'œuvre` },
+  { keys: ['ismène','ismene','sœur'], resp: `👩 Ismène est la sœur d'Antigone. Belle, blonde, raisonnable, elle refuse de suivre sa sœur dans la rébellion par peur de la mort. Elle n'est pas lâche mais pragmatique : elle choisit de vivre en s'adaptant aux règles. Elle incarne la majorité silencieuse, s'opposant à l'idéalisme absolu d'Antigone.` },
+  { keys: ['hémon','hemon','fiancé'], resp: `💑 Hémon est le fils de Créon et le fiancé d'Antigone. Il aime Antigone passionnément et plaide sa cause auprès de son père. Quand Créon refuse, Hémon choisit Antigone contre son père et se suicide sur son corps. Il illustre le conflit entre l'amour absolu et le devoir politique.` },
+  { keys: ['autobiographie','autobiographique'], resp: `📖 L'autobiographie se définit par l'identité entre auteur, narrateur et personnage principal. Dans La Boîte à merveilles : Sefrioui (auteur) = Sidi Mohammed (narrateur et personnage). Caractéristiques : narration à la 1ère personne, récit du passé, tonalité nostalgique, sincérité affichée.` },
+  { keys: ['tragédie','tragique','théâtre'], resp: `🎭 La tragédie est un genre théâtral où le héros est condamné à un destin fatal malgré ses qualités. Dans Antigone d'Anouilh :\n• Le dénouement est annoncé dès le Prologue\n• Antigone ne peut pas échapper à son destin\n• La catharsis (pitié + terreur) est visée\n• L'issue fatale est inévitable` },
+  { keys: ['plaidoyer','engagement','engagé'], resp: `✊ Le plaidoyer est un discours qui défend une cause. Hugo invente le plaidoyer romanesque avec Le Dernier Jour :\nArguments contre la peine de mort :\n1. Elle est irréversible (erreur judiciaire impossible à réparer)\n2. La torture psychologique de l'attente est une cruauté\n3. Elle est inefficace comme dissuasion\n4. Elle abaisse moralement la société` },
+  { keys: ['merci','thank','super','bravo'], resp: `😊 Avec plaisir ! N'hésitez pas à revenir si vous avez d'autres questions. Bon courage pour vos révisions ! 📚✨` },
+  { keys: ['aide','aider','besoin'], resp: `🤝 Je suis là pour vous aider ! Posez-moi des questions sur :\n• Un roman spécifique\n• Un personnage ou un thème\n• Des citations importantes\n• La méthode d'analyse pour le régional\nQue voulez-vous savoir ?` },
+  { keys: ['bonjour','salut','hello','bonsoir'], resp: `👋 Bonjour ! Je suis votre assistant pédagogique RegioBacc. Je peux vous aider sur :\n• Les trois romans du programme (Boîte à merveilles, Antigone, Dernier Jour)\n• Les personnages, thèmes et citations\n• Des conseils de révision pour le régional\nQue voulez-vous apprendre aujourd'hui ?` },
+];
+
+function initChatbot() {
+  const msgs = document.getElementById('chat-messages');
+  msgs.innerHTML = '';
+  appendBotMsg(`🎓 Bonjour ! Je suis votre assistant pédagogique RegioBacc. Posez-moi n'importe quelle question sur les trois romans du programme. Je suis là pour vous aider à réussir votre régional de français ! 📚`);
+}
+
+function appendBotMsg(text) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg bot';
+  div.innerHTML = `<div class="bot-avatar">🤖</div><div class="chat-bubble">${text.replace(/\n/g,'<br>')}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function appendUserMsg(text) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg user';
+  div.innerHTML = `<div class="chat-bubble">${text}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function sendChat() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = '';
+  appendUserMsg(text);
+  
+  // Show typing
+  const msgs = document.getElementById('chat-messages');
+  const typing = document.createElement('div');
+  typing.className = 'chat-msg bot';
+  typing.innerHTML = `<div class="bot-avatar">🤖</div><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+  
+  setTimeout(()=>{
+    typing.remove();
+    const resp = findResponse(text.toLowerCase());
+    appendBotMsg(resp);
+  }, 800+Math.random()*600);
+}
+
+function findResponse(q) {
+  for(const entry of KB) {
+    if(entry.keys.some(k=>q.includes(k))) return entry.resp;
+  }
+  // Generic fallback
+  if(q.includes('?') || q.length > 10) {
+    return `Je n'ai pas de réponse précise sur cette question. Essayez de me demander :\n• Des informations sur La Boîte à merveilles, Antigone ou Le Dernier Jour\n• Des explications sur les personnages ou les thèmes\n• Des conseils de révision pour le régional\nQue puis-je faire pour vous aider ?`;
+  }
+  return `Pourriez-vous reformuler votre question ? Vous pouvez m'interroger sur les romans, personnages, thèmes ou citations du programme.`;
+}
+
+function sendSuggestion(btn) {
+  document.getElementById('chat-input').value = btn.textContent;
+  sendChat();
+}
+</script>
+
+<script>
+// Service Worker registration
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
